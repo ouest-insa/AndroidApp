@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.object.Study;
@@ -24,38 +25,36 @@ public class RetrieveStudies extends AsyncTask<String, Void, ArrayList<Study>> {
 
 		try {
 			JSONArray json = readJsonFromUrl(url[0]);
-			
+
 			int i = 0;
 			while (!json.isNull(i)) {
 				studies.add(getStudyFromJSONObject(json.getJSONObject(i)));
 				i++;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			studies = null;
 		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return studies;
 	}
 
+	@SuppressLint("DefaultLocale")
 	private static Study getStudyFromJSONObject(JSONObject obj)
 			throws JSONException {
 		Study study = new Study();
 
 		study.setId(obj.getInt(StudyDAO.ID));
+		try {
+			study.setJeh(obj.getInt(StudyDAO.JEH));
+		} catch (JSONException e) {
+			study.setJeh(-1);
+		}
 		study.setName(obj.getString(StudyDAO.NAME));
-		study.setDescription(obj.getString(StudyDAO.DESCRIPTION));
-		study.setLogo(obj.getString(StudyDAO.LOGO));
-		study.setDepartment(obj.getString(StudyDAO.DEPARTMENT));
-		study.setSkill(obj.getString(StudyDAO.SKILL));
-		study.setCreated_date(obj.getInt(StudyDAO.CREATED_DATE));
-		study.setStarting_date(obj.getInt(StudyDAO.STARTING_DATE));
-		study.setEnding_date(obj.getInt(StudyDAO.ENDING_DATE));
-		study.setStudent_number(obj.getInt(StudyDAO.STUDENT_NUMBER));
-		study.setActive((obj.getInt(StudyDAO.ACTIVE) >= 1 ? true : false));
+		study.setStatus(fr.ouestinsa.object.Status.valueOf(obj.getString(
+				StudyDAO.STATUS).toUpperCase()));
+		study.setType(obj.getString(StudyDAO.TYPE));
 
 		return study;
 	}

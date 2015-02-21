@@ -1,46 +1,34 @@
 package fr.ouestinsa.db.sqlite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.SparseArray;
+import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
 
 public class StudyDAO implements DAO {
 	protected SQLiteDatabase db = null;
 	protected MySQLiteHelper helper = null;
 	
-	protected SparseArray<Study> cache;
-	
 	public static final String NAME_TABLE = "Study";
 	
 	public static final String ID = "id";
+	public static final String JEH = "jeh";
 	public static final String NAME = "name";
-	public static final String DESCRIPTION = "description";
-	public static final String LOGO = "logo";
-	public static final String DEPARTMENT = "department";
-	public static final String SKILL = "skill";
-	public static final String CREATED_DATE = "created_date";
-	public static final String STARTING_DATE = "starting_date";
-	public static final String ENDING_DATE = "ending_date";
-	public static final String STUDENT_NUMBER = "student_number";
-	public static final String ACTIVE = "active";
-	public static final String ACTIVE_YES = "1";
-	public static final String ACTIVE_NO = "0";
+	public static final String STATUS = "status";
+	public static final String TYPE = "type";
 	
 	public static final String CREATE_TABLE = 
 			"CREATE TABLE " + NAME_TABLE + " ("
 					+ ID + " INTEGER NOT NULL UNIQUE, "
+					+ JEH + " INTEGER, "
 					+ NAME + " TEXT NOT NULL, "
-					+ DESCRIPTION + " TEXT NOT NULL, "
-					+ LOGO + " TEXT, "
-					+ DEPARTMENT + " TEXT NOT NULL, "
-					+ SKILL + " TEXT NOT NULL, "
-					+ CREATED_DATE + " INTEGER NOT NULL, "
-					+ STARTING_DATE + " INTEGER NOT NULL, "
-					+ ENDING_DATE + " INTEGER NOT NULL, "
-					+ STUDENT_NUMBER + " INTEGER NOT NULL, "
-					+ ACTIVE + " INTEGER NOT NULL, "
+					+ STATUS + " TEXT NOT NULL, "
+					+ TYPE + " TEXT NOT NULL, "
 					+ "PRIMARY KEY (" + ID + ")"
 				+ ");";
 		public static final String CREATE_INDEX_1 = 
@@ -49,7 +37,6 @@ public class StudyDAO implements DAO {
 				"DROP TABLE " + NAME_TABLE + ";";
 
 	public StudyDAO(Context c) {
-		cache = new SparseArray<Study>();
 		helper = MySQLiteHelper.getInstance(c);
 	}
 
@@ -68,21 +55,56 @@ public class StudyDAO implements DAO {
 	public boolean add(Study study) {
 		ContentValues values = new ContentValues();
 		values.put(ID, study.getId());
+		values.put(JEH, study.getJeh());
 		values.put(NAME, study.getName());
-		values.put(DESCRIPTION, study.getDescription());
-		values.put(LOGO, study.getLogo());
-		values.put(DEPARTMENT, study.getDepartment());
-		values.put(SKILL, study.getSkill());
-		values.put(CREATED_DATE, study.getCreated_date());
-		values.put(STARTING_DATE, study.getStarting_date());
-		values.put(ENDING_DATE, study.getEnding_date());
-		values.put(STUDENT_NUMBER, study.getStudent_number());
-		values.put(ACTIVE, (study.isActive() ? 1 : 0));
+		values.put(STATUS, study.getStatus().toString());
+		values.put(TYPE, study.getType());
 		
 		if(db.insert(NAME_TABLE, null, values) == -1) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+
+	public List<Study> getAll() {
+
+		List<Study> list = new ArrayList<Study>();
+		
+		Cursor c = db.rawQuery(
+				"SELECT *" +
+				" FROM " + NAME_TABLE +
+				" ORDER BY " + ID, 
+				null);
+		while(c.moveToNext()) {
+			Study s = new Study();
+			s.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
+			s.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
+			s.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
+			s.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
+			s.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
+			list.add(s);
+		}
+		
+		return list;
+	}
+
+	public Study get(int id) {
+		Cursor c = db.rawQuery(
+				"SELECT *" +
+				" FROM " + NAME_TABLE + "" +
+				" WHERE " + ID + " = ?", 
+				new String[]{String.valueOf(id)});
+		if(c == null || c.getCount() == 0) {
+			return null;
+		}
+		c.moveToNext();
+		Study study = new Study();
+		study.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
+		study.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
+		study.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
+		study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
+		study.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
+		return study;
 	}
 }

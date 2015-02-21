@@ -1,11 +1,19 @@
 package fr.ouestinsa.object;
 
 import java.net.URL;
+import java.util.regex.Pattern;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import fr.ouestinsa.db.properties.AccountDAO;
+import fr.ouestinsa.exception.AccountNotFillException;
+import fr.ouestinsa.exception.MailInsaException;
 
 public class Account {
 	private String firstname;
 	private String lastname;
-	private String department;
+	private Department department;
 	private String mailINSA;
 	private URL viadeo;
 	private URL linkedIn;
@@ -26,11 +34,11 @@ public class Account {
 		this.lastname = lastname;
 	}
 
-	public String getDepartment() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 
@@ -38,7 +46,10 @@ public class Account {
 		return mailINSA;
 	}
 
-	public void setMailINSA(String mailINSA) {
+	public void setMailINSA(String mailINSA) throws MailInsaException {
+		if (Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr").matcher(mailINSA).find()) {
+			throw new MailInsaException("Address INSA incorrect");
+		}
 		this.mailINSA = mailINSA;
 	}
 
@@ -56,5 +67,20 @@ public class Account {
 
 	public void setLinkedIn(URL linkedIn) {
 		this.linkedIn = linkedIn;
+	}
+
+	public JSONObject toJSON() throws AccountNotFillException {
+		JSONObject json = new JSONObject();
+		try {
+			json.put(AccountDAO.FIRSTNAME, firstname);
+			json.put(AccountDAO.LASTNAME, lastname);
+			json.put(AccountDAO.DEPARTMENT, department);
+			json.put(AccountDAO.MAIL_INSA, mailINSA);
+			json.put(AccountDAO.VIADEO, viadeo);
+			json.put(AccountDAO.LINKEDIN, linkedIn);
+		} catch (JSONException e) {
+			throw new AccountNotFillException("Données de profil non remplies");
+		}
+		return json;
 	}
 }
