@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+
+    <Spinner
+        android:id="@+id/department"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/department" />
+
+    <EditText
+        android:id="@+id/firstname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/department"
+        android:hint="@string/firstname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/lastname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstname"
+        android:hint="@string/lastname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/mailINSA"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lastname"
+        android:hint="@string/mailINSA"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/viadeo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mailINSA"
+        android:hint="@string/viadeo"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/linkedIn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viadeo"
+        android:hint="@string/linkedIn"
+        android:inputType="text" />
+
+</RelativeLayout>

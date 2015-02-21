@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fr.ouestinsa.MainActivity"
+    xmlns:ouestinsa="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/save"
+        ouestinsa:showAsAction="always"
+        android:icon="@drawable/ic_action_accept"
+        android:title="@string/save"/>
+
+</menu>
