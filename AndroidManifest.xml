@@ -9,6 +9,7 @@
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,7 @@
         android:theme="@style/AppBaseTheme" >
         <activity
             android:name="fr.ouestinsa.ui.activity.SplashScreen"
-            android:theme="@style/AppThemeNoActionBar" >
+            android:theme="@style/AppBaseThemeNoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +30,10 @@
         <activity android:name="fr.ouestinsa.ui.activity.DetailsActivity" >
         </activity>
         <activity android:name="fr.ouestinsa.ui.activity.AccountActivity" >
+        </activity>
+        <activity
+            android:name="fr.ouestinsa.ui.activity.WebviewActivity"
+            android:theme="@style/AppBaseThemeNoActionBar" >
         </activity>
     </application>
 

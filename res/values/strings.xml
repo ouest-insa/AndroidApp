@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">Ouest INSA</string>
-    <string name="refresh">Rafraichir</string>
     <string name="save">Enregistrer</string>
     <string name="account">Profil</string>
+    <string name="website">Notre site web</string>
     <string name="apply">Postuler</string>
     <string name="success_update">Mise à jour avec succès</string>
     <string name="error_internet_connection">Pas de connexion internet</string>
@@ -16,9 +16,9 @@
     <string name="no_details">Aucune information complémentaire disponible.</string>
     <string name="succed_save_account">Données enregistrées</string>
     <string name="department">Département</string>
-    <string name="firstname">Prénom</string>
-    <string name="lastname">Nom</string>
-    <string name="mailINSA">Email INSA</string>
+    <string name="firstname">Prénom *</string>
+    <string name="lastname">Nom *</string>
+    <string name="mailINSA">Email INSA *</string>
     <string name="viadeo">URL Viadéo</string>
     <string name="linkedIn">URL LinkedIn</string>
 

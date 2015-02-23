@@ -11,6 +11,7 @@ public class Study {
 	private String name;
 	private Status status;
 	private String type;
+	private int typeId;
 
 	public int getId() {
 		return id;
@@ -50,6 +51,14 @@ public class Study {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 	
 	public JSONObject toJSON() throws JSONException {

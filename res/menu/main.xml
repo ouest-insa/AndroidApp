@@ -4,6 +4,12 @@
     xmlns:ouestinsa="http://schemas.android.com/apk/res-auto" >
 
     <item
+        android:id="@+id/website"
+        ouestinsa:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_web_site"
+        android:title="@string/website"/>
+
+    <item
         android:id="@+id/account"
         ouestinsa:showAsAction="always"
         android:icon="@drawable/ic_action_person"

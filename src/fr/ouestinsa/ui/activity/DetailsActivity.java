@@ -41,7 +41,7 @@ public class DetailsActivity extends ActionBarActivity implements
 		studyDAO.close();
 
 		((TextView) findViewById(R.id.name)).setText(study.getName());
-		if (study.getStatus().equals(Status.REALISATION)) {
+		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {
 			((Button) findViewById(R.id.apply)).setVisibility(View.GONE);

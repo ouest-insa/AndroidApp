@@ -21,6 +21,7 @@ public class StudyDAO implements DAO {
 	public static final String NAME = "name";
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
+	public static final String TYPE_ID = "type_id";
 	
 	public static final String CREATE_TABLE = 
 			"CREATE TABLE " + NAME_TABLE + " ("
@@ -29,6 +30,7 @@ public class StudyDAO implements DAO {
 					+ NAME + " TEXT NOT NULL, "
 					+ STATUS + " TEXT NOT NULL, "
 					+ TYPE + " TEXT NOT NULL, "
+					+ TYPE_ID + " INTEGER NOT NULL, "
 					+ "PRIMARY KEY (" + ID + ")"
 				+ ");";
 		public static final String CREATE_INDEX_1 = 
@@ -59,6 +61,7 @@ public class StudyDAO implements DAO {
 		values.put(NAME, study.getName());
 		values.put(STATUS, study.getStatus().toString());
 		values.put(TYPE, study.getType());
+		values.put(TYPE_ID, study.getTypeId());
 		
 		if(db.insert(NAME_TABLE, null, values) == -1) {
 			return false;
@@ -83,6 +86,7 @@ public class StudyDAO implements DAO {
 			s.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
 			s.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
 			s.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
+			s.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
 			list.add(s);
 		}
 		
@@ -105,6 +109,7 @@ public class StudyDAO implements DAO {
 		study.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
 		study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
 		study.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
+		study.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
 		return study;
 	}
 }

@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutionException;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -64,7 +66,15 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if (itemId == R.id.account) {
+		if (itemId == R.id.website) {
+			if(!isNetworkConnected()) {
+				Toast.makeText(this, R.string.error_internet_connection, Toast.LENGTH_SHORT).show();
+			} else {
+				Intent i = new Intent(MainActivity.this, WebviewActivity.class);
+				startActivity(i);
+			}
+			return true;
+		} else if (itemId == R.id.account) {
 			Intent i = new Intent(MainActivity.this, AccountActivity.class);
 			startActivity(i);
 			// overridePendingTransition(R.anim.display, R.anim.fade_out);
@@ -111,6 +121,16 @@ public class MainActivity extends ActionBarActivity implements
 				mSwipeRefreshLayout.setRefreshing(false);
 			}
 		});
+	}
+
+	private boolean isNetworkConnected() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		if (ni == null) {
+			// There are no active networks.
+			return false;
+		} else
+			return true;
 	}
 
 	private void setStudies() {

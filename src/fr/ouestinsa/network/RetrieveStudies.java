@@ -55,6 +55,7 @@ public class RetrieveStudies extends AsyncTask<String, Void, ArrayList<Study>> {
 		study.setStatus(fr.ouestinsa.object.Status.valueOf(obj.getString(
 				StudyDAO.STATUS).toUpperCase()));
 		study.setType(obj.getString(StudyDAO.TYPE));
+		study.setTypeId(obj.getInt(StudyDAO.TYPE_ID));
 
 		return study;
 	}

@@ -16,7 +16,7 @@ import android.os.AsyncTask;
 import fr.ouestinsa.object.Study;
 
 public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>> {
-	public static final String API_URL_GET_STUDIES = "http://siaje.deuxfleurs.fr/study";
+	public static final String API_URL_GET_STUDIES = "http://api.ouest-insa.fr/study";
 	@Override
 	protected abstract ArrayList<Study> doInBackground(String... url);
 

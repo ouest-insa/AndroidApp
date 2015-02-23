@@ -38,9 +38,7 @@ public class AccountDAO {
 		if(account.getFirstname() == null || account.getFirstname().equals("") 
 				|| account.getLastname() == null || account.getLastname().equals("") 
 				|| account.getDepartment() == null || account.getDepartment().toString().equals("") 
-				|| account.getMailINSA() == null || account.getMailINSA().equals("") 
-				|| account.getViadeo() == null || account.getViadeo().toString().equals("")
-				|| account.getLinkedIn() == null || account.getLinkedIn().toString().equals("")) {
+				|| account.getMailINSA() == null || account.getMailINSA().equals("")) {
 			throw new AccountNotFillException("Données de profil non remplies");
 		}
 		

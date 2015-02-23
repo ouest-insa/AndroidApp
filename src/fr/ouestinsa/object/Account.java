@@ -47,7 +47,7 @@ public class Account {
 	}
 
 	public void setMailINSA(String mailINSA) throws MailInsaException {
-		if (Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr").matcher(mailINSA).find()) {
+		if (!Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr").matcher(mailINSA).find()) {
 			throw new MailInsaException("Address INSA incorrect");
 		}
 		this.mailINSA = mailINSA;
