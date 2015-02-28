@@ -4,7 +4,7 @@
     <string name="app_name">Ouest INSA</string>
     <string name="save">Enregistrer</string>
     <string name="account">Profil</string>
-    <string name="website">Notre site web</string>
+    <string name="website">Qui sommes-nous ?</string>
     <string name="apply">Postuler</string>
     <string name="success_update">Mise à jour avec succès</string>
     <string name="error_internet_connection">Pas de connexion internet</string>

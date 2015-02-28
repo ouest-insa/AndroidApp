@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/icon_dev" />
 
@@ -17,23 +18,29 @@
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/img"
         android:layout_toRightOf="@id/img"
+        android:textSize="17sp"
         android:textColor="#585858"
         android:textStyle="bold" />
 
-    <TextView
+    <!-- TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/type"
         android:layout_toRightOf="@id/type"
-        android:textColor="#585858" />
+        android:textSize="17sp"
+        android:textColor="#585858" /-->
 
     <TextView
         android:id="@+id/jeh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_below="@id/type"
+        android:layout_toEndOf="@id/img"
         android:layout_toRightOf="@id/img"
+        android:textSize="17sp"
         android:textColor="#6CE6D1" />
 
 </RelativeLayout>

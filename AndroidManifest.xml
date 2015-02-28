@@ -16,16 +16,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
-        <activity
-            android:name="fr.ouestinsa.ui.activity.SplashScreen"
-            android:theme="@style/AppBaseThemeNoActionBar" >
+        <activity android:name="fr.ouestinsa.ui.activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="fr.ouestinsa.ui.activity.MainActivity" >
         </activity>
         <activity android:name="fr.ouestinsa.ui.activity.DetailsActivity" >
         </activity>

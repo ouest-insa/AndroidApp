@@ -47,13 +47,9 @@ public class MainActivity extends ActionBarActivity implements
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		StudyDAO studyDAO = factory.getStudyDAO(this);
-		studyDAO.open();
-		studies = studyDAO.getAll();
-		studyDAO.close();
+		mSwipeRefreshLayout.setRefreshing(false);
 
-		setStudies();
+		onRefresh();
 	}
 
 	@Override
@@ -67,8 +63,9 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
 		if (itemId == R.id.website) {
-			if(!isNetworkConnected()) {
-				Toast.makeText(this, R.string.error_internet_connection, Toast.LENGTH_SHORT).show();
+			if (!isNetworkConnected()) {
+				Toast.makeText(this, R.string.error_internet_connection,
+						Toast.LENGTH_SHORT).show();
 			} else {
 				Intent i = new Intent(MainActivity.this, WebviewActivity.class);
 				startActivity(i);
@@ -77,7 +74,8 @@ public class MainActivity extends ActionBarActivity implements
 		} else if (itemId == R.id.account) {
 			Intent i = new Intent(MainActivity.this, AccountActivity.class);
 			startActivity(i);
-			// overridePendingTransition(R.anim.display, R.anim.fade_out);
+			overridePendingTransition(android.R.anim.slide_in_left,
+					android.R.anim.fade_out);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -94,6 +92,7 @@ public class MainActivity extends ActionBarActivity implements
 			studies = new RetrieveStudies().executeOnExecutor(
 					AsyncTask.THREAD_POOL_EXECUTOR,
 					Retrieve.API_URL_GET_STUDIES).get();
+
 			if (studies != null) {
 				studyDAO.clear();
 
@@ -108,12 +107,17 @@ public class MainActivity extends ActionBarActivity implements
 			} else {
 				Toast.makeText(this, R.string.error_internet_connection,
 						Toast.LENGTH_LONG).show();
+				studies = studyDAO.getAll();
+
+				setStudies();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+
+		studyDAO.close();
 
 		mSwipeRefreshLayout.post(new Runnable() {
 			@Override
@@ -146,7 +150,7 @@ public class MainActivity extends ActionBarActivity implements
 						false);
 
 				TextView jeh = (TextView) rowView.findViewById(R.id.jeh);
-				TextView name = (TextView) rowView.findViewById(R.id.name);
+				// TextView name = (TextView) rowView.findViewById(R.id.name);
 				TextView type = (TextView) rowView.findViewById(R.id.type);
 
 				if (studies.get(position).getJeh() > 0) {
@@ -155,8 +159,8 @@ public class MainActivity extends ActionBarActivity implements
 				} else {
 					jeh.setVisibility(View.GONE);
 				}
-				name.setText(" ("
-						+ String.valueOf(studies.get(position).getName()) + ")");
+				// name.setText(" ("
+				// + String.valueOf(studies.get(position).getName()) + ")");
 				type.setText(String.valueOf(studies.get(position).getType()));
 
 				return rowView;
@@ -174,6 +178,8 @@ public class MainActivity extends ActionBarActivity implements
 						DetailsActivity.class);
 				i.putExtra(StudyDAO.ID, String.valueOf(selectedStudy.getId()));
 				startActivity(i);
+				overridePendingTransition(R.anim.display,
+						android.R.anim.fade_out);
 			}
 		});
 	}

@@ -5,28 +5,12 @@
         android:duration="@android:integer/config_longAnimTime"
         android:fromAlpha="0.5"
         android:toAlpha="1" />
-
-    <scale
+    
+	<translate 
         android:duration="@android:integer/config_longAnimTime"
-        android:fromXScale="0.2"
-        android:fromYScale="0.2"
-        android:pivotX="0.9"
-        android:pivotY="0.5"
-        android:toXScale="1"
-        android:toYScale="1" />
-
-    <translate
-        android:duration="@android:integer/config_longAnimTime"
-        android:fromXDelta="0.8"
-        android:fromYDelta="0.8"
-        android:toXDelta="0.5"
-        android:toYDelta="0.5" />
-
-    <rotate
-        android:duration="@android:integer/config_longAnimTime"
-        android:fromDegrees="45"
-        android:pivotX="0.5"
-        android:pivotY="0.5"
-        android:toDegrees="0" />
+	    android:fromXDelta="100%p"
+	    android:toXDelta="0%p"
+	    android:fromYDelta="50%p"
+	    android:toYDelta="0%p" />
 
 </set>

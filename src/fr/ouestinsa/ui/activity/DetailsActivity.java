@@ -44,7 +44,7 @@ public class DetailsActivity extends ActionBarActivity implements
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {
-			((Button) findViewById(R.id.apply)).setVisibility(View.GONE);
+			((Button) findViewById(R.id.apply)).setEnabled(false);
 		}
 		((RelativeLayout) findViewById(R.id.base_layout))
 				.setOnTouchListener(new OnSwipeTouchListener(this) {
