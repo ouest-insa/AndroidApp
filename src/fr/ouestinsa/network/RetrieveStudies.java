@@ -2,11 +2,16 @@ package fr.ouestinsa.network;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.object.Study;
 
 public class RetrieveStudies extends Retrieve {
+
+	public RetrieveStudies(String url) {
+		super(url);
+	}
 
 	@SuppressLint("DefaultLocale")
 	protected Study getFromJSONObject(JSONObject obj) throws JSONException {

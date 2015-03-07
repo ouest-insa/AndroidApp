@@ -1,14 +1,12 @@
 package fr.ouestinsa.ui.activity;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -82,6 +80,7 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onRefresh() {
 		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
@@ -89,9 +88,11 @@ public class MainActivity extends ActionBarActivity implements
 		studyDAO.open();
 
 		try {
-			studies = new RetrieveStudies().executeOnExecutor(
-					AsyncTask.THREAD_POOL_EXECUTOR,
-					Retrieve.API_URL_GET_STUDIES).get();
+			Retrieve r = new RetrieveStudies(Retrieve.API_URL_GET_STUDIES);
+			Thread t = new Thread(r);
+			t.start();
+			t.join();
+			studies = (List<Study>) r.getResult();
 
 			if (studies != null) {
 				studyDAO.clear();
@@ -112,8 +113,6 @@ public class MainActivity extends ActionBarActivity implements
 				setStudies();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
 

@@ -13,18 +13,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
 import fr.ouestinsa.object.Study;
 
-public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>> {
-	public static final String API_URL_GET_STUDIES = "http://api.ouest-insa.fr/study";
+public abstract class Retrieve implements Runnable {
+	private static final String API_URL = "http://api.ouest-insa.fr/";
+	public static final String API_URL_GET_STUDIES = API_URL + "study";
+	public static final String API_URL_GET_DETAILS = API_URL + "detail";
+
+	private String url;
+	private Object result;
 	
-	@Override
-	protected ArrayList<Study> doInBackground(String... url) {
+	public Retrieve(String url) {
+		this.url = url;
+	}
+	
+	public void run() {
 		ArrayList<Study> studies = new ArrayList<Study>();
 
 		try {
-			JSONArray json = readJsonFromUrl(url[0]);
+			JSONArray json = readJsonFromUrl(url);
 
 			getFromJSONObject(json.getJSONObject(0));
 		} catch (IOException e) {
@@ -33,7 +40,7 @@ public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>>
 			e.printStackTrace();
 		}
 
-		return studies;
+		result = studies;
 	}
 
 	public static JSONArray readJsonFromUrl(String url) throws IOException,
@@ -60,4 +67,8 @@ public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>>
 	}
 	
 	abstract protected Study getFromJSONObject(JSONObject jsonObject) throws JSONException;
+	
+	public Object getResult() {
+		return result;
+	}
 }
