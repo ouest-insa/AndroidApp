@@ -11,22 +11,29 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import fr.ouestinsa.object.Study;
 
 public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>> {
 	public static final String API_URL_GET_STUDIES = "http://api.ouest-insa.fr/study";
+	
 	@Override
-	protected abstract ArrayList<Study> doInBackground(String... url);
+	protected ArrayList<Study> doInBackground(String... url) {
+		ArrayList<Study> studies = new ArrayList<Study>();
 
-	private static String readAll(Reader rd) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		int cp;
-		while ((cp = rd.read()) != -1) {
-			sb.append((char) cp);
+		try {
+			JSONArray json = readJsonFromUrl(url[0]);
+
+			getFromJSONObject(json.getJSONObject(0));
+		} catch (IOException e) {
+			studies = null;
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-		return sb.toString();
+
+		return studies;
 	}
 
 	public static JSONArray readJsonFromUrl(String url) throws IOException,
@@ -42,4 +49,15 @@ public abstract class Retrieve extends AsyncTask<String, Void, ArrayList<Study>>
 			is.close();
 		}
 	}
+
+	private static String readAll(Reader rd) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1) {
+			sb.append((char) cp);
+		}
+		return sb.toString();
+	}
+	
+	abstract protected Study getFromJSONObject(JSONObject jsonObject) throws JSONException;
 }
