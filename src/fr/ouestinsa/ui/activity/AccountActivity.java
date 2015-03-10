@@ -93,8 +93,8 @@ public class AccountActivity extends ActionBarActivity {
 		int itemId = item.getItemId();
 		if (itemId == android.R.id.home) {
 			finish();
-			// overridePendingTransition(R.anim.fade_in,
-			// R.anim.slide_out_right);
+			overridePendingTransition(android.R.anim.fade_in,
+					android.R.anim.slide_out_right);
 			return true;
 		} else if (itemId == R.id.save) {
 			try {
@@ -116,6 +116,8 @@ public class AccountActivity extends ActionBarActivity {
 				Toast.makeText(this, R.string.succed_save_account,
 						Toast.LENGTH_SHORT).show();
 				finish();
+				overridePendingTransition(android.R.anim.fade_in,
+						android.R.anim.slide_out_right);
 			} catch (AccountNotFillException e) {
 				Toast.makeText(this, R.string.error_account_not_fill,
 						Toast.LENGTH_LONG).show();
@@ -135,5 +137,12 @@ public class AccountActivity extends ActionBarActivity {
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(android.R.anim.fade_in,
+				android.R.anim.slide_out_right);
 	}
 }

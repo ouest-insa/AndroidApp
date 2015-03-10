@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
 import fr.ouestinsa.object.Study;
 
 public abstract class Retrieve implements Runnable {
@@ -22,21 +23,25 @@ public abstract class Retrieve implements Runnable {
 
 	private String url;
 	private Object result;
-	
+
 	public Retrieve(String url) {
 		this.url = url;
 	}
-	
+
+	@Override
 	public void run() {
 		ArrayList<Study> studies = new ArrayList<Study>();
 
 		try {
 			JSONArray json = readJsonFromUrl(url);
 
-			getFromJSONObject(json.getJSONObject(0));
+			for(int i = 0 ; i < json.length() ; i++) {
+				studies.add(getFromJSONObject(json.getJSONObject(i)));
+			}
 		} catch (IOException e) {
 			studies = null;
 		} catch (JSONException e) {
+			Log.e("CC", e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -65,9 +70,10 @@ public abstract class Retrieve implements Runnable {
 		}
 		return sb.toString();
 	}
-	
-	abstract protected Study getFromJSONObject(JSONObject jsonObject) throws JSONException;
-	
+
+	abstract protected Study getFromJSONObject(JSONObject jsonObject)
+			throws JSONException;
+
 	public Object getResult() {
 		return result;
 	}

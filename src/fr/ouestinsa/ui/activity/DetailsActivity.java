@@ -90,11 +90,18 @@ public class DetailsActivity extends ActionBarActivity implements
 		int itemId = item.getItemId();
 		if (itemId == android.R.id.home) {
 			finish();
-			// overridePendingTransition(R.anim.fade_in,
-			// R.anim.slide_out_right);
+			overridePendingTransition(android.R.anim.fade_in,
+					android.R.anim.slide_out_right);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
+		overridePendingTransition(android.R.anim.fade_in,
+				android.R.anim.slide_out_right);
 	}
 }

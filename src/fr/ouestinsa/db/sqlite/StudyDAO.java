@@ -77,7 +77,7 @@ public class StudyDAO implements DAO {
 		Cursor c = db.rawQuery(
 				"SELECT *" +
 				" FROM " + NAME_TABLE +
-				" ORDER BY " + ID, 
+				" ORDER BY " + STATUS + ", " + ID + " DESC", // Ugly way, but it works... 
 				null);
 		while(c.moveToNext()) {
 			Study s = new Study();

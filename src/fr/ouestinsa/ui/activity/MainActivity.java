@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +30,9 @@ import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.network.Retrieve;
 import fr.ouestinsa.network.RetrieveStudies;
+import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
+import fr.ouestinsa.object.TypesStudy;
 
 public class MainActivity extends ActionBarActivity implements
 		OnRefreshListener {
@@ -148,14 +152,25 @@ public class MainActivity extends ActionBarActivity implements
 				View rowView = inflater.inflate(R.layout.list_study, parent,
 						false);
 
+				ImageView img = (ImageView) rowView.findViewById(R.id.img);
 				TextView jeh = (TextView) rowView.findViewById(R.id.jeh);
 				// TextView name = (TextView) rowView.findViewById(R.id.name);
 				TextView type = (TextView) rowView.findViewById(R.id.type);
 
-				if (studies.get(position).getJeh() > 0) {
-					jeh.setText((studies.get(position).getJeh() > 3) ? (studies
-							.get(position).getJeh() > 6) ? "€€€" : "€€" : "€");
+				try {
+					img.setImageResource(TypesStudy.forInt(
+							studies.get(position).getTypeId()).getRessource());
+				} catch (IllegalArgumentException e) {
+					Log.e("CC", studies.get(position).getName() + " : "
+							+ studies.get(position).getTypeId());
+				}
+				if (studies.get(position).getStatus().equals(Status.CONTACT)) {
+					jeh.setText("On a besoin de toi !");
 				} else {
+				//if (studies.get(position).getJeh() > 0) {
+				//	jeh.setText((studies.get(position).getJeh() > 3) ? (studies
+				//			.get(position).getJeh() > 6) ? "€€€" : "€€" : "€");
+				//} else {
 					jeh.setVisibility(View.GONE);
 				}
 				// name.setText(" ("
@@ -177,7 +192,7 @@ public class MainActivity extends ActionBarActivity implements
 						DetailsActivity.class);
 				i.putExtra(StudyDAO.ID, String.valueOf(selectedStudy.getId()));
 				startActivity(i);
-				overridePendingTransition(R.anim.display,
+				overridePendingTransition(android.R.anim.slide_in_left,
 						android.R.anim.fade_out);
 			}
 		});
