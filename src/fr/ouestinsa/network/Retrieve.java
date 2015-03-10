@@ -7,22 +7,17 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-import fr.ouestinsa.object.Study;
 
 public abstract class Retrieve implements Runnable {
-	private static final String API_URL = "http://api.ouest-insa.fr/";
+	public static final String API_URL = "http://api.ouest-insa.fr/";
 	public static final String API_URL_GET_STUDIES = API_URL + "study";
 	public static final String API_URL_GET_DETAILS = API_URL + "detail";
 
 	private String url;
-	private Object result;
+	private Object result = null;
 
 	public Retrieve(String url) {
 		this.url = url;
@@ -30,22 +25,15 @@ public abstract class Retrieve implements Runnable {
 
 	@Override
 	public void run() {
-		ArrayList<Study> studies = new ArrayList<Study>();
-
+		JSONArray json;
 		try {
-			JSONArray json = readJsonFromUrl(url);
-
-			for(int i = 0 ; i < json.length() ; i++) {
-				studies.add(getFromJSONObject(json.getJSONObject(i)));
-			}
+			json = readJsonFromUrl(url);
+			result = getFromJSON(json);
 		} catch (IOException e) {
-			studies = null;
+			e.printStackTrace();
 		} catch (JSONException e) {
-			Log.e("CC", e.getMessage());
 			e.printStackTrace();
 		}
-
-		result = studies;
 	}
 
 	public static JSONArray readJsonFromUrl(String url) throws IOException,
@@ -71,8 +59,7 @@ public abstract class Retrieve implements Runnable {
 		return sb.toString();
 	}
 
-	abstract protected Study getFromJSONObject(JSONObject jsonObject)
-			throws JSONException;
+	abstract protected Object getFromJSON(JSONArray json);
 
 	public Object getResult() {
 		return result;

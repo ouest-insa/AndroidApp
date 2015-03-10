@@ -19,6 +19,8 @@ import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.network.ApplyStudy;
+import fr.ouestinsa.network.Retrieve;
+import fr.ouestinsa.network.RetrieveDetails;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
 import fr.ouestinsa.ui.OnSwipeTouchListener;
@@ -41,6 +43,23 @@ public class DetailsActivity extends ActionBarActivity implements
 		studyDAO.close();
 
 		((TextView) findViewById(R.id.name)).setText(study.getName());
+
+		try {
+			Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES);
+			Thread t = new Thread(r);
+			t.start();
+			t.join();
+			study.setDetails((String) r.getResult());
+			
+			if(study.getDetails() != null) {
+				((TextView) findViewById(R.id.details)).setText(study.getDetails());
+			}
+		} catch (InterruptedException e) {
+			Toast.makeText(this, R.string.error_internet_connection,
+					Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		}
+
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {

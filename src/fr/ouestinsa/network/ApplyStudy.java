@@ -17,7 +17,7 @@ import fr.ouestinsa.object.Account;
 import fr.ouestinsa.ui.activity.DetailsActivity;
 
 public class ApplyStudy extends AsyncTask<DetailsActivity, Void, Exception> {
-	public static final String API_URL_APPLY_STUDY = "http://api.ouest-insa.fr/study";
+	public static final String API_URL_APPLY_STUDY = Retrieve.API_URL + "study";
 
 	@Override
 	protected Exception doInBackground(DetailsActivity... activity) {

@@ -22,6 +22,7 @@ public class StudyDAO implements DAO {
 	public static final String STATUS = "status";
 	public static final String TYPE = "type";
 	public static final String TYPE_ID = "type_id";
+	public static final String DETAILS = "details";
 	
 	public static final String CREATE_TABLE = 
 			"CREATE TABLE " + NAME_TABLE + " ("
@@ -31,6 +32,7 @@ public class StudyDAO implements DAO {
 					+ STATUS + " TEXT NOT NULL, "
 					+ TYPE + " TEXT NOT NULL, "
 					+ TYPE_ID + " INTEGER NOT NULL, "
+					+ DETAILS + " TEXT, "
 					+ "PRIMARY KEY (" + ID + ")"
 				+ ");";
 		public static final String CREATE_INDEX_1 = 
@@ -62,6 +64,7 @@ public class StudyDAO implements DAO {
 		values.put(STATUS, study.getStatus().toString());
 		values.put(TYPE, study.getType());
 		values.put(TYPE_ID, study.getTypeId());
+		values.put(DETAILS, study.getDetails());
 		
 		if(db.insert(NAME_TABLE, null, values) == -1) {
 			return false;
@@ -80,14 +83,15 @@ public class StudyDAO implements DAO {
 				" ORDER BY " + STATUS + ", " + ID + " DESC", // Ugly way, but it works... 
 				null);
 		while(c.moveToNext()) {
-			Study s = new Study();
-			s.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
-			s.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
-			s.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
-			s.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
-			s.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
-			s.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
-			list.add(s);
+			Study study = new Study();
+			study.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
+			study.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
+			study.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
+			study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
+			study.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
+			study.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
+			study.setDetails(c.getString(c.getColumnIndexOrThrow(DETAILS)));
+			list.add(study);
 		}
 		
 		return list;
@@ -110,6 +114,7 @@ public class StudyDAO implements DAO {
 		study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
 		study.setType(c.getString(c.getColumnIndexOrThrow(TYPE)));
 		study.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
+		study.setDetails(c.getString(c.getColumnIndexOrThrow(DETAILS)));
 		return study;
 	}
 }

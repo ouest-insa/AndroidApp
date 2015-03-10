@@ -1,6 +1,6 @@
 package fr.ouestinsa.network;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import fr.ouestinsa.object.Study;
 
@@ -9,7 +9,7 @@ public class RetrieveDetails extends Retrieve {
 		super(url);
 	}
 
-	protected Study getFromJSONObject(JSONObject jsonObject) {
+	protected Study getFromJSON(JSONArray json) {
 		// TODO : Get details of study
 		return null;
 	}
