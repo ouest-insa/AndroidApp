@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,9 @@ import fr.ouestinsa.ui.OnSwipeTouchListener;
 
 public class DetailsActivity extends ActionBarActivity implements
 		OnClickListener {
+	private Handler mHandler = new Handler();
 	private Study study;
+	private StudyDAO studyDAO;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,31 +39,12 @@ public class DetailsActivity extends ActionBarActivity implements
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		StudyDAO studyDAO = factory.getStudyDAO(this);
+		studyDAO = factory.getStudyDAO(this);
 		studyDAO.open();
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
 				StudyDAO.ID)));
 
-		try {
-			@SuppressWarnings("rawtypes")
-			Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES + "/"
-					+ study.getId());
-			Thread t = new Thread(r);
-			t.start();
-			t.join();
-			study.setDetails((String) r.getResult());
-
-			if (study.getDetails() != null) {
-				((TextView) findViewById(R.id.details)).setText(study
-						.getDetails());
-			}
-			studyDAO.addDetails(study.getId(), study.getDetails());
-		} catch (InterruptedException e) {
-			Toast.makeText(this, R.string.error_internet_connection,
-					Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
-		studyDAO.close();
+		new Thread(new GetDetails(this)).start();
 
 		((TextView) findViewById(R.id.name)).setText(study.getName());
 
@@ -69,7 +53,7 @@ public class DetailsActivity extends ActionBarActivity implements
 		} else {
 			((Button) findViewById(R.id.apply)).setEnabled(false);
 		}
-		
+
 		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);
 		scrollView.setOnTouchListener(new OnSwipeTouchListener(this) {
 			public void onSwipeRight() {
@@ -78,6 +62,51 @@ public class DetailsActivity extends ActionBarActivity implements
 						android.R.anim.slide_out_right);
 			}
 		});
+	}
+
+	private class GetDetails implements Runnable {
+		private DetailsActivity a;
+
+		public GetDetails(DetailsActivity a) {
+			this.a = a;
+		}
+
+		@Override
+		public void run() {
+			try {
+				@SuppressWarnings("rawtypes")
+				Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES
+						+ "/" + study.getId());
+				Thread t = new Thread(r);
+				t.start();
+				t.join();
+				study.setDetails((String) r.getResult());
+
+				if (study.getDetails() != null) {
+					mHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							a.setDetails();
+						}
+					});
+				}
+				studyDAO.addDetails(study.getId(), study.getDetails());
+			} catch (InterruptedException e) {
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(a, R.string.error_internet_connection,
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setDetails() {
+		((TextView) findViewById(R.id.details)).setText(study.getDetails());
+		studyDAO.close();
 	}
 
 	@Override

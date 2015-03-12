@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
@@ -38,7 +39,8 @@ public class MainActivity extends ActionBarActivity implements
 		OnRefreshListener {
 	private List<Study> studies;
 	private ListView listview;
-	SwipeRefreshLayout mSwipeRefreshLayout;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Handler mHandler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,16 @@ public class MainActivity extends ActionBarActivity implements
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
-		mSwipeRefreshLayout.setRefreshing(false);
+		openSwipeRefresh();
 
-		onRefresh();
+		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
+		StudyDAO studyDAO = factory.getStudyDAO(this);
+		studyDAO.open();
+		studies = studyDAO.getAll();
+		studyDAO.close();
+
+		setStudies();
+		closeSwipeRefresh();
 	}
 
 	@Override
@@ -84,49 +93,25 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onRefresh() {
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		StudyDAO studyDAO = factory.getStudyDAO(this);
-		studyDAO.open();
+		new Thread(new GetStudies(this)).start();
+	}
 
-		try {
-			@SuppressWarnings("rawtypes")
-			Retrieve r = new RetrieveStudies(Retrieve.API_URL_GET_STUDIES);
-			Thread t = new Thread(r);
-			t.start();
-			t.join();
-			studies = (List<Study>) r.getResult();
-
-			if (studies != null) {
-				studyDAO.clear();
-
-				for (Study study : studies) {
-					studyDAO.add(study);
-				}
-
-				setStudies();
-
-				Toast.makeText(this, R.string.success_update, Toast.LENGTH_LONG)
-						.show();
-			} else {
-				Toast.makeText(this, R.string.error_internet_connection,
-						Toast.LENGTH_LONG).show();
-				studies = studyDAO.getAll();
-
-				setStudies();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		studyDAO.close();
-
+	public void closeSwipeRefresh() {
 		mSwipeRefreshLayout.post(new Runnable() {
 			@Override
 			public void run() {
 				mSwipeRefreshLayout.setRefreshing(false);
+			}
+		});
+	}
+
+	public void openSwipeRefresh() {
+		mSwipeRefreshLayout.post(new Runnable() {
+			@Override
+			public void run() {
+				mSwipeRefreshLayout.setRefreshing(true);
 			}
 		});
 	}
@@ -139,6 +124,65 @@ public class MainActivity extends ActionBarActivity implements
 			return false;
 		} else
 			return true;
+	}
+
+	private class GetStudies implements Runnable {
+		private MainActivity a;
+
+		public GetStudies(MainActivity a) {
+			this.a = a;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void run() {
+			try {
+				@SuppressWarnings("rawtypes")
+				Retrieve r = new RetrieveStudies(Retrieve.API_URL_GET_STUDIES);
+				Thread t = new Thread(r);
+				t.start();
+				t.join();
+				studies = (List<Study>) r.getResult();
+
+				if (studies != null) {
+					DAOFactory factory = SQLiteDAOFactory
+							.getFactory(DAOFactory.SQLITE);
+					StudyDAO studyDAO = factory.getStudyDAO(a);
+					studyDAO.open();
+
+					studyDAO.clear();
+					for (Study study : studies) {
+						studyDAO.add(study);
+					}
+
+					studyDAO.close();
+
+					mHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							setStudies();
+
+							Toast.makeText(a, R.string.success_update,
+									Toast.LENGTH_LONG).show();
+						}
+					});
+				} else {
+					mHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							Toast.makeText(a,
+									R.string.error_internet_connection,
+									Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			a.closeSwipeRefresh();
+		}
+
 	}
 
 	private void setStudies() {
@@ -168,10 +212,11 @@ public class MainActivity extends ActionBarActivity implements
 				if (studies.get(position).getStatus().equals(Status.CONTACT)) {
 					jeh.setText("On a besoin de toi !");
 				} else {
-				//if (studies.get(position).getJeh() > 0) {
-				//	jeh.setText((studies.get(position).getJeh() > 3) ? (studies
-				//			.get(position).getJeh() > 6) ? "€€€" : "€€" : "€");
-				//} else {
+					// if (studies.get(position).getJeh() > 0) {
+					// jeh.setText((studies.get(position).getJeh() > 3) ?
+					// (studies
+					// .get(position).getJeh() > 6) ? "€€€" : "€€" : "€");
+					// } else {
 					jeh.setVisibility(View.GONE);
 				}
 				// name.setText(" ("
@@ -197,5 +242,9 @@ public class MainActivity extends ActionBarActivity implements
 						android.R.anim.fade_out);
 			}
 		});
+	}
+
+	public void toast(int stringRessource) {
+		Toast.makeText(this, stringRessource, Toast.LENGTH_LONG).show();
 	}
 }
