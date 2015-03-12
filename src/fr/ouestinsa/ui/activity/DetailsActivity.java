@@ -44,6 +44,10 @@ public class DetailsActivity extends ActionBarActivity implements
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
 				StudyDAO.ID)));
 
+		if (study.getDetails() != null) {
+			((TextView) findViewById(R.id.details)).setText(study.getDetails());
+		}
+
 		new Thread(new GetDetails(this)).start();
 
 		((TextView) findViewById(R.id.name)).setText(study.getName());
@@ -86,7 +90,9 @@ public class DetailsActivity extends ActionBarActivity implements
 					mHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							a.setDetails();
+							((TextView) findViewById(R.id.details))
+									.setText(study.getDetails());
+							studyDAO.close();
 						}
 					});
 				}
@@ -102,11 +108,6 @@ public class DetailsActivity extends ActionBarActivity implements
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void setDetails() {
-		((TextView) findViewById(R.id.details)).setText(study.getDetails());
-		studyDAO.close();
 	}
 
 	@Override
