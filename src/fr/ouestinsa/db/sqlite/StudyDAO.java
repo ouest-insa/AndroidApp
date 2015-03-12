@@ -117,4 +117,11 @@ public class StudyDAO implements DAO {
 		study.setDetails(c.getString(c.getColumnIndexOrThrow(DETAILS)));
 		return study;
 	}
+
+	public int addDetails(int id, String details) {
+		ContentValues values = new ContentValues();
+		values.put(DETAILS, details);
+		
+		return db.update(NAME_TABLE, values, ID + " = ?", new String[] {String.valueOf(id)});
+	}
 }

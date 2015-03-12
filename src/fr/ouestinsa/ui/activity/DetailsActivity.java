@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ouestinsa.R;
@@ -40,37 +40,44 @@ public class DetailsActivity extends ActionBarActivity implements
 		studyDAO.open();
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
 				StudyDAO.ID)));
-		studyDAO.close();
-
-		((TextView) findViewById(R.id.name)).setText(study.getName());
 
 		try {
-			Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES);
+			@SuppressWarnings("rawtypes")
+			Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES + "/"
+					+ study.getId());
 			Thread t = new Thread(r);
 			t.start();
 			t.join();
 			study.setDetails((String) r.getResult());
-			
-			if(study.getDetails() != null) {
-				((TextView) findViewById(R.id.details)).setText(study.getDetails());
+
+			if (study.getDetails() != null) {
+				((TextView) findViewById(R.id.details)).setText(study
+						.getDetails());
 			}
+			studyDAO.addDetails(study.getId(), study.getDetails());
 		} catch (InterruptedException e) {
 			Toast.makeText(this, R.string.error_internet_connection,
 					Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
+		studyDAO.close();
+
+		((TextView) findViewById(R.id.name)).setText(study.getName());
 
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {
 			((Button) findViewById(R.id.apply)).setEnabled(false);
 		}
-		((RelativeLayout) findViewById(R.id.base_layout))
-				.setOnTouchListener(new OnSwipeTouchListener(this) {
-					public void onSwipeRight() {
-						finish();
-					}
-				});
+		
+		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);
+		scrollView.setOnTouchListener(new OnSwipeTouchListener(this) {
+			public void onSwipeRight() {
+				finish();
+				overridePendingTransition(android.R.anim.fade_in,
+						android.R.anim.slide_out_right);
+			}
+		});
 	}
 
 	@Override

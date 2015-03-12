@@ -1,5 +1,11 @@
 package fr.ouestinsa.network;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -11,12 +17,13 @@ import android.util.Log;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.object.Study;
 
-public class RetrieveStudies extends Retrieve {
+public class RetrieveStudies extends Retrieve<JSONArray> {
 
 	public RetrieveStudies(String url) {
 		super(url);
 	}
 
+	@Override
 	protected Object getFromJSON(JSONArray json) {
 		ArrayList<Study> studies = new ArrayList<Study>();
 
@@ -30,6 +37,20 @@ public class RetrieveStudies extends Retrieve {
 		}
 
 		return studies;
+	}
+
+	@Override
+	protected JSONArray readJsonFromUrl(String url) throws IOException,
+			JSONException {
+		InputStream is = new URL(url).openStream();
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
+					Charset.forName("UTF-8")));
+			String jsonText = readAll(rd);
+			return new JSONArray(jsonText);
+		} finally {
+			is.close();
+		}
 	}
 
 	@SuppressLint("DefaultLocale")

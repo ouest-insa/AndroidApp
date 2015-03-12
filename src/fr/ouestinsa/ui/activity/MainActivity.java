@@ -92,6 +92,7 @@ public class MainActivity extends ActionBarActivity implements
 		studyDAO.open();
 
 		try {
+			@SuppressWarnings("rawtypes")
 			Retrieve r = new RetrieveStudies(Retrieve.API_URL_GET_STUDIES);
 			Thread t = new Thread(r);
 			t.start();
