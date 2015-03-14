@@ -3,7 +3,6 @@ package fr.ouestinsa.ui.activity;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,11 +53,7 @@ public class DetailsActivity extends ActionBarActivity implements
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {
-			Button apply = (Button) findViewById(R.id.apply);
-			apply.setEnabled(false);
-			Drawable button = getBaseContext().getResources().getDrawable(
-					R.drawable.grey_button);
-			apply.setBackground(button);
+			((Button) findViewById(R.id.apply)).setEnabled(false);
 		}
 
 		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);

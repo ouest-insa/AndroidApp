@@ -25,15 +25,6 @@
         android:textColor="#585858"
         android:textStyle="bold" />
 
-    <!-- TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/type"
-        android:layout_toRightOf="@id/type"
-        android:textSize="17sp"
-        android:textColor="#585858" /-->
-
     <TextView
         android:id="@+id/jeh"
         android:layout_width="wrap_content"

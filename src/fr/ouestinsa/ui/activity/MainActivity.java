@@ -185,7 +185,6 @@ public class MainActivity extends ActionBarActivity implements
 
 				ImageView img = (ImageView) rowView.findViewById(R.id.img);
 				TextView jeh = (TextView) rowView.findViewById(R.id.jeh);
-				// TextView name = (TextView) rowView.findViewById(R.id.name);
 				TextView type = (TextView) rowView.findViewById(R.id.type);
 
 				try {
@@ -201,13 +200,10 @@ public class MainActivity extends ActionBarActivity implements
 								.get(position).getJeh() > 6) ? "€€€" : "€€"
 								: "€");
 					}
-					// jeh.setText("On a besoin de toi !");
 				} else {
 					rowView.setAlpha(0.5f);
 					jeh.setVisibility(View.GONE);
 				}
-				// name.setText(" ("
-				// + String.valueOf(studies.get(position).getName()) + ")");
 				type.setText(String.valueOf(studies.get(position).getType()));
 
 				return rowView;

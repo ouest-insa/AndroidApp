@@ -3,7 +3,7 @@
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff" >
+    android:background="@drawable/ic_launcher_grey_big" >
         
 	<ListView 
 		android:id="@+id/listview"
