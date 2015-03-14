@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.sqlite.StudyDAO;
+import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.network.ApplyStudy;
 import fr.ouestinsa.network.Retrieve;

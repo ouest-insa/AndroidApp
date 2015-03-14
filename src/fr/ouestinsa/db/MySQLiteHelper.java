@@ -1,4 +1,4 @@
-package fr.ouestinsa.db.sqlite;
+package fr.ouestinsa.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

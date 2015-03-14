@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.properties.AccountDAO;
+import fr.ouestinsa.db.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.exception.MailInsaException;
 import fr.ouestinsa.object.Account;

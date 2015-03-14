@@ -1,4 +1,4 @@
-package fr.ouestinsa.db.sqlite;
+package fr.ouestinsa.db;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import fr.ouestinsa.db.sqlite.StudyDAO;
+import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.object.Study;
 
 public class RetrieveStudies extends Retrieve<JSONArray> {

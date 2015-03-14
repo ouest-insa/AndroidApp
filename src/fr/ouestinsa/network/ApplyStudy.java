@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
-import fr.ouestinsa.db.properties.AccountDAO;
+import fr.ouestinsa.db.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.object.Account;
 import fr.ouestinsa.ui.activity.DetailsActivity;

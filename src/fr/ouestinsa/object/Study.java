@@ -3,7 +3,7 @@ package fr.ouestinsa.object;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.ouestinsa.db.sqlite.StudyDAO;
+import fr.ouestinsa.db.StudyDAO;
 
 public class Study {
 	private int id;

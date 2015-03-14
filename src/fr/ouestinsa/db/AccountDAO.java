@@ -1,4 +1,4 @@
-package fr.ouestinsa.db.properties;
+package fr.ouestinsa.db;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,24 +28,29 @@ public class AccountDAO {
 	private AccountDAO(Context c) {
 		context = c;
 	}
-	
+
 	public static AccountDAO getInstance(Context c) {
-		if(mInstance == null) {
+		if (mInstance == null) {
 			mInstance = new AccountDAO(c);
 		}
 		return mInstance;
 	}
 
-	public boolean save(Account account) throws IOException, AccountNotFillException {
-		if(account.getFirstname() == null || account.getFirstname().equals("") 
-				|| account.getLastname() == null || account.getLastname().equals("") 
-				|| account.getDepartment() == null || account.getDepartment().toString().equals("") 
-				|| account.getMailINSA() == null || account.getMailINSA().equals("")) {
+	public boolean save(Account account) throws IOException,
+			AccountNotFillException {
+		if (account.getFirstname() == null || account.getFirstname().equals("")
+				|| account.getLastname() == null
+				|| account.getLastname().equals("")
+				|| account.getDepartment() == null
+				|| account.getDepartment().toString().equals("")
+				|| account.getMailINSA() == null
+				|| account.getMailINSA().equals("")) {
 			throw new AccountNotFillException("Données de profil non remplies");
 		}
-		
-		OutputStream os = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-		
+
+		OutputStream os = context.openFileOutput(FILE_NAME,
+				Context.MODE_PRIVATE);
+
 		Properties prop = new Properties();
 		prop.setProperty(FIRSTNAME, account.getFirstname());
 		prop.setProperty(LASTNAME, account.getLastname());
@@ -54,7 +59,7 @@ public class AccountDAO {
 		prop.setProperty(VIADEO, account.getViadeo().toString());
 		prop.setProperty(LINKEDIN, account.getLinkedIn().toString());
 		prop.store(os, "Account properties");
-		
+
 		os.close();
 		return false;
 	}

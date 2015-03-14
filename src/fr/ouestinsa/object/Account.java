@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.ouestinsa.db.properties.AccountDAO;
+import fr.ouestinsa.db.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.exception.MailInsaException;
 

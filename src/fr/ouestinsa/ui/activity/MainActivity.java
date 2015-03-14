@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.sqlite.StudyDAO;
+import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.network.Retrieve;
 import fr.ouestinsa.network.RetrieveStudies;
 import fr.ouestinsa.object.Status;
