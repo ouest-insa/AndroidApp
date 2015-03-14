@@ -26,8 +26,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.DAOFactory;
-import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.network.Retrieve;
 import fr.ouestinsa.network.RetrieveStudies;
@@ -135,17 +133,11 @@ public class MainActivity extends ActionBarActivity implements
 				List<Study> studies = (List<Study>) r.getResult();
 
 				if (studies != null) {
-					DAOFactory factory = SQLiteDAOFactory
-							.getFactory(DAOFactory.SQLITE);
-					StudyDAO studyDAO = factory.getStudyDAO(a);
-					studyDAO.open();
-
+					StudyDAO studyDAO = StudyDAO.getInstance(a);
 					studyDAO.clear();
 					for (Study study : studies) {
 						studyDAO.add(study);
 					}
-
-					studyDAO.close();
 
 					mHandler.post(new Runnable() {
 						@Override
@@ -176,11 +168,8 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void setStudies() {
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		StudyDAO studyDAO = factory.getStudyDAO(this);
-		studyDAO.open();
+		StudyDAO studyDAO = StudyDAO.getInstance(this);
 		final List<Study> studies = studyDAO.getAll();
-		studyDAO.close();
 
 		ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<Study>(this, R.layout.list_study,

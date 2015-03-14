@@ -9,8 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
-import fr.ouestinsa.db.DAOFactory;
-import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.properties.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.object.Account;
@@ -38,16 +36,13 @@ public class ApplyStudy extends AsyncTask<DetailsActivity, Void, Exception> {
 	private JSONObject getJSON(DetailsActivity activity) throws IOException,
 			JSONException, AccountNotFillException {
 		JSONObject dataJSON = new JSONObject();
-
-		DAOFactory factoryPROP = SQLiteDAOFactory
-				.getFactory(DAOFactory.PROPERTIES);
-		AccountDAO accountDAO = factoryPROP.getAccountDAO(activity);
-		accountDAO.open();
+		
+		AccountDAO accountDAO = AccountDAO.getInstance(activity);
 		Account account = null;
 		account = accountDAO.load();
+		
 		dataJSON.put("study", activity.getCurrentStudy().toJSON());
 		dataJSON.put("student", account.toJSON());
-		accountDAO.close();
 
 		return dataJSON;
 	}

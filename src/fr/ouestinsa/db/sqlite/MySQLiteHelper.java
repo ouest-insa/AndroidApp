@@ -24,23 +24,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		createStudy(db);
-		//createAccount(db);
 	}
 
 	private void createStudy(SQLiteDatabase db) {
 		db.execSQL(StudyDAO.CREATE_TABLE);
 		db.execSQL(StudyDAO.CREATE_INDEX_1);
-	}/*
-
-	private void createAccount(SQLiteDatabase db) {
-		db.execSQL(AccountDAO.CREATE_TABLE);
-		db.execSQL(AccountDAO.CREATE_INDEX_1);
-	}*/
+	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(StudyDAO.DELETE_TABLE);
-		//db.execSQL(AccountDAO.DELETE_TABLE);
 		onCreate(db);
 	}
 

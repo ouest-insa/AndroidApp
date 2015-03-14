@@ -16,8 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.DAOFactory;
-import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.sqlite.StudyDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.network.ApplyStudy;
@@ -40,9 +38,7 @@ public class DetailsActivity extends ActionBarActivity implements
 		setContentView(R.layout.activity_details);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		studyDAO = factory.getStudyDAO(this);
-		studyDAO.open();
+		studyDAO = StudyDAO.getInstance(this);
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
 				StudyDAO.ID)));
 
@@ -101,7 +97,6 @@ public class DetailsActivity extends ActionBarActivity implements
 						} else {
 							details.setText(study.getDetails());
 						}
-						studyDAO.close();
 					}
 				});
 				studyDAO.addDetails(study.getId(), study.getDetails());

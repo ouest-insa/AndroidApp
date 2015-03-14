@@ -10,9 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
 
-public class StudyDAO implements DAO {
-	protected SQLiteDatabase db = null;
-	protected MySQLiteHelper helper = null;
+public class StudyDAO {
+	private SQLiteDatabase db = null;
+	private MySQLiteHelper helper = null;
+	private static StudyDAO mInstance = null;
 	
 	public static final String NAME_TABLE = "Study";
 	
@@ -42,16 +43,16 @@ public class StudyDAO implements DAO {
 		public static final String DELETE_TABLE = 
 				"DROP TABLE " + NAME_TABLE + ";";
 
-	public StudyDAO(Context c) {
+	private StudyDAO(Context c) {
 		helper = MySQLiteHelper.getInstance(c);
-	}
-
-	public void open() {
 		db = helper.getWritableDatabase();
 	}
 	
-	public void close() {
-		helper.close();
+	public static StudyDAO getInstance(Context c) {
+		if(mInstance == null) {
+			mInstance = new StudyDAO(c);
+		}
+		return mInstance;
 	}
 
 	public void clear() {

@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import fr.ouestinsa.R;
-import fr.ouestinsa.db.DAOFactory;
-import fr.ouestinsa.db.SQLiteDAOFactory;
 import fr.ouestinsa.db.properties.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.exception.MailInsaException;
@@ -56,15 +54,12 @@ public class AccountActivity extends ActionBarActivity {
 
 		Account account = new Account();
 
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.PROPERTIES);
-		AccountDAO accountDAO = factory.getAccountDAO(this);
-		accountDAO.open();
+		AccountDAO accountDAO = AccountDAO.getInstance(this);
 		try {
 			account = accountDAO.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		accountDAO.close();
 
 		for (int i = 0; i < departments.length; i++) {
 			if (departments[i].equals(account.getDepartment())) {
@@ -106,12 +101,8 @@ public class AccountActivity extends ActionBarActivity {
 				account.setMailINSA(mailINSA.getText().toString());
 				account.setViadeo(new URL(viadeo.getText().toString()));
 				account.setLinkedIn(new URL(linkedIn.getText().toString()));
-				DAOFactory factory = SQLiteDAOFactory
-						.getFactory(DAOFactory.PROPERTIES);
-				AccountDAO accountDAO = factory.getAccountDAO(this);
-				accountDAO.open();
+				AccountDAO accountDAO = AccountDAO.getInstance(this);
 				accountDAO.save(account);
-				accountDAO.close();
 
 				Toast.makeText(this, R.string.succed_save_account,
 						Toast.LENGTH_SHORT).show();

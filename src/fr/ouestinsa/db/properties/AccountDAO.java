@@ -13,6 +13,7 @@ import fr.ouestinsa.object.Account;
 import fr.ouestinsa.object.Department;
 
 public class AccountDAO {
+	private static AccountDAO mInstance;
 	String FILE_NAME = "account.properties";
 
 	public static final String FIRSTNAME = "firstname";
@@ -24,14 +25,15 @@ public class AccountDAO {
 
 	private Context context;
 
-	public AccountDAO(Context c) {
+	private AccountDAO(Context c) {
 		context = c;
 	}
-
-	public void open() {
-	}
-
-	public void close() {
+	
+	public static AccountDAO getInstance(Context c) {
+		if(mInstance == null) {
+			mInstance = new AccountDAO(c);
+		}
+		return mInstance;
 	}
 
 	public boolean save(Account account) throws IOException, AccountNotFillException {
