@@ -20,6 +20,7 @@ public class StudyDAO implements DAO {
 	public static final String JEH = "jeh";
 	public static final String NAME = "name";
 	public static final String STATUS = "status";
+	public static final String APPLICABLE = "applicable";
 	public static final String TYPE = "type";
 	public static final String TYPE_ID = "type_id";
 	public static final String DETAILS = "details";
@@ -30,6 +31,7 @@ public class StudyDAO implements DAO {
 					+ JEH + " INTEGER, "
 					+ NAME + " TEXT NOT NULL, "
 					+ STATUS + " TEXT NOT NULL, "
+					+ APPLICABLE + " INTEGER DEFAULT(0), "
 					+ TYPE + " TEXT NOT NULL, "
 					+ TYPE_ID + " INTEGER NOT NULL, "
 					+ DETAILS + " TEXT, "
@@ -62,15 +64,24 @@ public class StudyDAO implements DAO {
 		values.put(JEH, study.getJeh());
 		values.put(NAME, study.getName());
 		values.put(STATUS, study.getStatus().toString());
+		if(study.getStatus().toString().equals(Status.CONTACT.toString())) {
+			values.put(APPLICABLE, 1);
+		}
 		values.put(TYPE, study.getType());
 		values.put(TYPE_ID, study.getTypeId());
-		values.put(DETAILS, study.getDetails());
 		
 		if(db.insert(NAME_TABLE, null, values) == -1) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+
+	public int addDetails(int id, String details) {
+		ContentValues values = new ContentValues();
+		values.put(DETAILS, details);
+		
+		return db.update(NAME_TABLE, values, ID + " = ?", new String[] {String.valueOf(id)});
 	}
 
 	public List<Study> getAll() {
@@ -80,7 +91,7 @@ public class StudyDAO implements DAO {
 		Cursor c = db.rawQuery(
 				"SELECT *" +
 				" FROM " + NAME_TABLE +
-				" ORDER BY " + STATUS + ", " + ID + " DESC", // Ugly way, but it works... 
+				" ORDER BY " + APPLICABLE + " DESC", 
 				null);
 		while(c.moveToNext()) {
 			Study study = new Study();
@@ -116,12 +127,5 @@ public class StudyDAO implements DAO {
 		study.setTypeId(c.getInt(c.getColumnIndexOrThrow(TYPE_ID)));
 		study.setDetails(c.getString(c.getColumnIndexOrThrow(DETAILS)));
 		return study;
-	}
-
-	public int addDetails(int id, String details) {
-		ContentValues values = new ContentValues();
-		values.put(DETAILS, details);
-		
-		return db.update(NAME_TABLE, values, ID + " = ?", new String[] {String.valueOf(id)});
 	}
 }

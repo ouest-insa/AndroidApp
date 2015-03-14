@@ -14,6 +14,7 @@
     <string name="error_malformed_url">Inpossible de sauvegarder vos informations. Vueillez vérifier vos URL.</string>
     <string name="error_mail_insa">Vous devez entrer une adresse mail INSA Rennes</string>
     <string name="no_details">Aucune information complémentaire disponible.</string>
+    <string name="pending">Chargement des détails&#8230;</string>
     <string name="succed_save_account">Données enregistrées</string>
     <string name="department">Département</string>
     <string name="firstname">Prénom *</string>

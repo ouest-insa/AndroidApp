@@ -3,6 +3,7 @@ package fr.ouestinsa.ui.activity;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,7 @@ public class DetailsActivity extends ActionBarActivity implements
 	private Handler mHandler = new Handler();
 	private Study study;
 	private StudyDAO studyDAO;
+	private TextView details;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class DetailsActivity extends ActionBarActivity implements
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
 				StudyDAO.ID)));
 
-		if (study.getDetails() != null) {
-			((TextView) findViewById(R.id.details)).setText(study.getDetails());
+		details = (TextView) findViewById(R.id.details);
+		if (study.getDetails() != null && !study.getDetails().equals("")) {
+			details.setText(study.getDetails());
 		}
 
 		new Thread(new GetDetails(this)).start();
@@ -55,7 +58,11 @@ public class DetailsActivity extends ActionBarActivity implements
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
 		} else {
-			((Button) findViewById(R.id.apply)).setEnabled(false);
+			Button apply = (Button) findViewById(R.id.apply);
+			apply.setEnabled(false);
+			Drawable button = getBaseContext().getResources().getDrawable(
+					R.drawable.grey_button);
+			apply.setBackground(button);
 		}
 
 		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);
@@ -86,16 +93,17 @@ public class DetailsActivity extends ActionBarActivity implements
 				t.join();
 				study.setDetails((String) r.getResult());
 
-				if (study.getDetails() != null) {
-					mHandler.post(new Runnable() {
-						@Override
-						public void run() {
-							((TextView) findViewById(R.id.details))
-									.setText(study.getDetails());
-							studyDAO.close();
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						if (study.getDetails() == null) {
+							details.setText(R.string.no_details);
+						} else {
+							details.setText(study.getDetails());
 						}
-					});
-				}
+						studyDAO.close();
+					}
+				});
 				studyDAO.addDetails(study.getId(), study.getDetails());
 			} catch (InterruptedException e) {
 				mHandler.post(new Runnable() {
@@ -120,18 +128,18 @@ public class DetailsActivity extends ActionBarActivity implements
 				if (e != null
 						&& (e instanceof AccountNotFillException || e instanceof IOException)) {
 					Toast.makeText(this, R.string.error_account_not_fill,
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 				} else if (e != null) {
 					Toast.makeText(this, R.string.error_apply,
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_LONG)
+				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_SHORT)
 						.show();
 			} catch (ExecutionException e) {
 				e.printStackTrace();
-				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_LONG)
+				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_SHORT)
 						.show();
 			}
 		}

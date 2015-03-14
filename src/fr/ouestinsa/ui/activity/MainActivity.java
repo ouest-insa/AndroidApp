@@ -37,8 +37,6 @@ import fr.ouestinsa.object.TypesStudy;
 
 public class MainActivity extends ActionBarActivity implements
 		OnRefreshListener {
-	private List<Study> studies;
-	private ListView listview;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 	private Handler mHandler = new Handler();
 
@@ -47,20 +45,12 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		listview = (ListView) findViewById(R.id.listview);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
 		openSwipeRefresh();
-
-		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
-		StudyDAO studyDAO = factory.getStudyDAO(this);
-		studyDAO.open();
-		studies = studyDAO.getAll();
-		studyDAO.close();
-
 		setStudies();
-		closeSwipeRefresh();
+		new Thread(new GetStudies(this)).start();
 	}
 
 	@Override
@@ -142,7 +132,7 @@ public class MainActivity extends ActionBarActivity implements
 				Thread t = new Thread(r);
 				t.start();
 				t.join();
-				studies = (List<Study>) r.getResult();
+				List<Study> studies = (List<Study>) r.getResult();
 
 				if (studies != null) {
 					DAOFactory factory = SQLiteDAOFactory
@@ -163,7 +153,7 @@ public class MainActivity extends ActionBarActivity implements
 							setStudies();
 
 							Toast.makeText(a, R.string.success_update,
-									Toast.LENGTH_LONG).show();
+									Toast.LENGTH_SHORT).show();
 						}
 					});
 				} else {
@@ -172,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements
 						public void run() {
 							Toast.makeText(a,
 									R.string.error_internet_connection,
-									Toast.LENGTH_LONG).show();
+									Toast.LENGTH_SHORT).show();
 						}
 					});
 				}
@@ -186,6 +176,13 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void setStudies() {
+		DAOFactory factory = SQLiteDAOFactory.getFactory(DAOFactory.SQLITE);
+		StudyDAO studyDAO = factory.getStudyDAO(this);
+		studyDAO.open();
+		final List<Study> studies = studyDAO.getAll();
+		studyDAO.close();
+
+		ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<Study>(this, R.layout.list_study,
 				studies) {
 			@SuppressLint("ViewHolder")
@@ -210,13 +207,14 @@ public class MainActivity extends ActionBarActivity implements
 							+ studies.get(position).getTypeId());
 				}
 				if (studies.get(position).getStatus().equals(Status.CONTACT)) {
-					jeh.setText("On a besoin de toi !");
+					if (studies.get(position).getJeh() > 0) {
+						jeh.setText((studies.get(position).getJeh() > 3) ? (studies
+								.get(position).getJeh() > 6) ? "€€€" : "€€"
+								: "€");
+					}
+					// jeh.setText("On a besoin de toi !");
 				} else {
-					// if (studies.get(position).getJeh() > 0) {
-					// jeh.setText((studies.get(position).getJeh() > 3) ?
-					// (studies
-					// .get(position).getJeh() > 6) ? "€€€" : "€€" : "€");
-					// } else {
+					rowView.setAlpha(0.5f);
 					jeh.setVisibility(View.GONE);
 				}
 				// name.setText(" ("
@@ -242,9 +240,5 @@ public class MainActivity extends ActionBarActivity implements
 						android.R.anim.fade_out);
 			}
 		});
-	}
-
-	public void toast(int stringRessource) {
-		Toast.makeText(this, stringRessource, Toast.LENGTH_LONG).show();
 	}
 }

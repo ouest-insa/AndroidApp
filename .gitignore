@@ -29,3 +29,6 @@ proguard/
 .settings/
 .project
 .classpath
+
+# Windows Files
+Thumbs.db

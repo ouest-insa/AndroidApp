@@ -3,7 +3,7 @@
 	<item android:state_pressed="true" >
 		<shape>
 			<solid
-				android:color="#00266b" />
+				android:color="@color/blue_pressed" />
 			<corners
 				android:radius="3dp" />
 			<padding
@@ -15,10 +15,8 @@
 	</item>
 	<item>
 		<shape>
-			<gradient
-				android:startColor="#0069c3"
-				android:endColor="#297cc3"
-				android:angle="135" />
+			<solid
+				android:color="@color/blue_actionbar" />
 			<corners
 				android:radius="3dp" />
 			<padding

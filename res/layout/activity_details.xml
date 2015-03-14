@@ -2,7 +2,7 @@
     android:id="@+id/base_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="@drawable/ic_launcher_grey_big"
     android:padding="10dp" >
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:id="@+id/details"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/no_details"
+            android:text="@string/pending"
             android:textIsSelectable="true"
             android:textStyle="italic" />
 
@@ -31,10 +31,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/boutton_bleu"
+            android:background="@drawable/blue_button"
             android:drawableLeft="@drawable/ic_action_accept"
             android:drawableStart="@drawable/ic_action_accept"
-            android:text="@string/apply" />
+            android:text="@string/apply"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </ScrollView>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
@@ -11,9 +11,17 @@
 
     <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/blue_actionbar</item>
+        <item name="android:titleTextStyle">@style/MyActionBarText</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
 
         <!-- Support library compatibility -->
         <item name="background">@color/blue_actionbar</item>
+        <item name="titleTextStyle">@style/MyActionBarText</item>
+        <item name="homeAsUpIndicator">@drawable/ic_action_back</item>
+    </style>
+
+    <style name="MyActionBarText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AppBaseThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar"></style>

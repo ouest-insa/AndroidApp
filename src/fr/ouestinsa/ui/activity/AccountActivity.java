@@ -120,15 +120,15 @@ public class AccountActivity extends ActionBarActivity {
 						android.R.anim.slide_out_right);
 			} catch (AccountNotFillException e) {
 				Toast.makeText(this, R.string.error_account_not_fill,
-						Toast.LENGTH_LONG).show();
+						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			} catch (MalformedURLException e) {
 				Toast.makeText(this, R.string.error_malformed_url,
-						Toast.LENGTH_LONG).show();
+						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			} catch (MailInsaException e) {
 				Toast.makeText(this, R.string.error_mail_insa,
-						Toast.LENGTH_LONG).show();
+						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();

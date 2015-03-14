@@ -2,5 +2,8 @@
 <resources>
 
     <color name="blue_actionbar">#66CCCC</color>
+    <color name="blue_pressed">#66BBBB</color>
+    <color name="grey">#D0D0D0</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
