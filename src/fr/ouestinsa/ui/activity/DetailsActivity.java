@@ -18,15 +18,13 @@ import fr.ouestinsa.R;
 import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.network.ApplyStudy;
-import fr.ouestinsa.network.Retrieve;
-import fr.ouestinsa.network.RetrieveDetails;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
 import fr.ouestinsa.ui.OnSwipeTouchListener;
+import fr.ouestinsa.ui.activity.background.GetDetails;
 
 public class DetailsActivity extends ActionBarActivity implements
 		OnClickListener {
-	private Handler mHandler = new Handler();
 	private Study study;
 	private StudyDAO studyDAO;
 	private TextView details;
@@ -43,10 +41,10 @@ public class DetailsActivity extends ActionBarActivity implements
 
 		details = (TextView) findViewById(R.id.details);
 		if (study.getDetails() != null && !study.getDetails().equals("")) {
-			details.setText(study.getDetails());
+			setDetails(study.getDetails());
 		}
 
-		new Thread(new GetDetails(this)).start();
+		new Thread(new GetDetails(this, new Handler(), study)).start();
 
 		((TextView) findViewById(R.id.name)).setText(study.getName());
 
@@ -66,45 +64,16 @@ public class DetailsActivity extends ActionBarActivity implements
 		});
 	}
 
-	private class GetDetails implements Runnable {
-		private DetailsActivity a;
-
-		public GetDetails(DetailsActivity a) {
-			this.a = a;
-		}
-
-		@Override
-		public void run() {
-			try {
-				@SuppressWarnings("rawtypes")
-				Retrieve r = new RetrieveDetails(Retrieve.API_URL_GET_STUDIES
-						+ "/" + study.getId());
-				Thread t = new Thread(r);
-				t.start();
-				t.join();
-				study.setDetails((String) r.getResult());
-
-				mHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						if (study.getDetails() == null) {
-							details.setText(R.string.no_details);
-						} else {
-							details.setText(study.getDetails());
-						}
-					}
-				});
-				studyDAO.addDetails(study.getId(), study.getDetails());
-			} catch (InterruptedException e) {
-				mHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						Toast.makeText(a, R.string.error_internet_connection,
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-				e.printStackTrace();
-			}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		if (itemId == android.R.id.home) {
+			finish();
+			overridePendingTransition(android.R.anim.fade_in,
+					android.R.anim.slide_out_right);
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -139,17 +108,12 @@ public class DetailsActivity extends ActionBarActivity implements
 		return study;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int itemId = item.getItemId();
-		if (itemId == android.R.id.home) {
-			finish();
-			overridePendingTransition(android.R.anim.fade_in,
-					android.R.anim.slide_out_right);
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
+	public void setDetails(String details) {
+		this.details.setText(details);
+	}
+
+	public void addDetailsToDB() {
+		studyDAO.addDetails(study.getId(), study.getDetails());
 	}
 
 	@Override
