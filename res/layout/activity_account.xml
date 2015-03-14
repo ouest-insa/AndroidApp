@@ -5,10 +5,13 @@
 
     <RelativeLayout
         android:id="@+id/profil_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#000000"
-        android:padding="1dp" >
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#222222"
+        android:padding="1dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -28,7 +31,9 @@
         android:id="@+id/department"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/department" />
+        android:prompt="@string/department"
+        android:layout_toLeftOf="@id/profil_img"
+        android:layout_toStartOf="@id/profil_img" />
 
     <EditText
         android:id="@+id/firstname"
@@ -36,7 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/department"
         android:hint="@string/firstname"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:layout_toLeftOf="@id/profil_img"
+        android:layout_toStartOf="@id/profil_img" />
 
     <EditText
         android:id="@+id/lastname"
@@ -44,7 +51,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/firstname"
         android:hint="@string/lastname"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:layout_toLeftOf="@id/profil_img"
+        android:layout_toStartOf="@id/profil_img" />
 
     <EditText
         android:id="@+id/mailINSA"
