@@ -11,6 +11,8 @@ public class ApplicableDAO {
 	private MySQLiteHelper helper = null;
 	private static ApplicableDAO mInstance = null;
 	
+	private static final int nbDaysNotApplicable = 15;
+	
 	public static final String NAME_TABLE = "Applicable";
 	
 	public static final String REFERENCE = "reference";
@@ -56,7 +58,7 @@ public class ApplicableDAO {
 		long lastApply = c.getLong(c.getColumnIndexOrThrow(TIMESTAMP));
 		long now = new java.util.Date().getTime();
 		
-		return (now - lastApply > 1000 * 60 * 60 * 24 * 15) ? true : false;
+		return (now - lastApply > 1000 * 60 * 60 * 24 * nbDaysNotApplicable) ? true : false;
 	}
 	
 	public int justApply(Study study) {

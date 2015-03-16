@@ -3,6 +3,8 @@ package fr.ouestinsa.ui.activity.background;
 import java.util.List;
 
 import android.os.Handler;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import fr.ouestinsa.R;
 import fr.ouestinsa.db.StudyDAO;
@@ -42,7 +44,8 @@ public class GetStudies implements Runnable {
 					@Override
 					public void run() {
 						a.setStudies();
-
+						((RelativeLayout) a.findViewById(R.id.connection_impossible)).setVisibility(View.GONE);
+						
 						Toast.makeText(a, R.string.success_update,
 								Toast.LENGTH_SHORT).show();
 					}

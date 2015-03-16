@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import fr.ouestinsa.R;
 import fr.ouestinsa.db.AccountDAO;
@@ -40,7 +41,8 @@ public class MainActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
+		StudyDAO.getInstance(this); // Just to place the context
 		AccountDAO.getInstance(this); // Just to place the context
 		ApplicableDAO.getInstance(this); // Just to place the context
 
@@ -102,6 +104,11 @@ public class MainActivity extends ActionBarActivity implements
 	public void setStudies() {
 		StudyDAO studyDAO = StudyDAO.getInstance(this);
 		final List<Study> studies = studyDAO.getAll();
+		
+		if(studies.size() == 0) {
+			((RelativeLayout) findViewById(R.id.connection_impossible)).setVisibility(View.VISIBLE);
+			return;
+		}
 
 		ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(new ArrayAdapter<Study>(this, R.layout.list_study,
@@ -151,7 +158,8 @@ public class MainActivity extends ActionBarActivity implements
 
 				Intent i = new Intent(getApplicationContext(),
 						DetailsActivity.class);
-				i.putExtra(StudyDAO.REFERENCE, String.valueOf(selectedStudy.getReference()));
+				i.putExtra(StudyDAO.REFERENCE,
+						String.valueOf(selectedStudy.getReference()));
 				startActivity(i);
 			}
 		});

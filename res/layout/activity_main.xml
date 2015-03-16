@@ -9,4 +9,28 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <RelativeLayout
+        android:id="@+id/connection_impossible"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/cloud" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/img"
+            android:text="@string/error_internet_connection"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
 </android.support.v4.widget.SwipeRefreshLayout>
