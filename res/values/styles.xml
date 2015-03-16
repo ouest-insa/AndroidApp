@@ -2,6 +2,7 @@
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="colorPrimaryDark">#66BBBB</item>
 
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/MyActionBar</item>

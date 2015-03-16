@@ -1,59 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/ic_launcher_grey_big" >
-
-    <RelativeLayout
-        android:id="@+id/profil_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="#222222"
-        android:padding="1dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp" >
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="#C3C3C3"
-            android:padding="4dp" >
-
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_action_person_grey_big" />
-        </RelativeLayout>
-    </RelativeLayout>
+    android:background="#FFFFFF"
+    android:padding="8dp" >
 
     <Spinner
         android:id="@+id/department"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/department"
-        android:layout_toLeftOf="@id/profil_img"
-        android:layout_toStartOf="@id/profil_img" />
+        android:layout_marginRight="100dp"
+        android:layout_marginEnd="100dp" />
 
     <EditText
         android:id="@+id/firstname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/department"
+        android:layout_marginRight="100dp"
+        android:layout_marginEnd="100dp"
         android:hint="@string/firstname"
         android:inputType="textPersonName"
-        android:layout_toLeftOf="@id/profil_img"
-        android:layout_toStartOf="@id/profil_img" />
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/lastname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/firstname"
+        android:layout_marginRight="100dp"
+        android:layout_marginEnd="100dp"
         android:hint="@string/lastname"
         android:inputType="textPersonName"
-        android:layout_toLeftOf="@id/profil_img"
-        android:layout_toStartOf="@id/profil_img" />
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/mailINSA"
@@ -61,7 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lastname"
         android:hint="@string/mailINSA"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/viadeo"
@@ -69,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/mailINSA"
         android:hint="@string/viadeo"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/linkedIn"
@@ -77,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/viadeo"
         android:hint="@string/linkedIn"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textSize="18sp" />
 
 </RelativeLayout>

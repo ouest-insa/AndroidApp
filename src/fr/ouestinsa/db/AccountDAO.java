@@ -3,6 +3,7 @@ package fr.ouestinsa.db;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -52,12 +53,18 @@ public class AccountDAO {
 				Context.MODE_PRIVATE);
 
 		Properties prop = new Properties();
+		prop.setProperty(DEPARTMENT, account.getDepartment().toString());
 		prop.setProperty(FIRSTNAME, account.getFirstname());
 		prop.setProperty(LASTNAME, account.getLastname());
-		prop.setProperty(DEPARTMENT, account.getDepartment().toString());
 		prop.setProperty(MAIL_INSA, account.getMailINSA());
-		prop.setProperty(VIADEO, account.getViadeo().toString());
-		prop.setProperty(LINKEDIN, account.getLinkedIn().toString());
+		try {
+			prop.setProperty(VIADEO, account.getViadeo().toString());
+		} catch(NullPointerException e) {
+		}
+		try {
+			prop.setProperty(LINKEDIN, account.getLinkedIn().toString());
+		} catch(NullPointerException e) {
+		}
 		prop.store(os, "Account properties");
 
 		os.close();
@@ -71,15 +78,19 @@ public class AccountDAO {
 		prop.load(is);
 
 		Account account = new Account();
+		account.setDepartment(Department.valueOf(prop.getProperty(DEPARTMENT)));
 		account.setFirstname(prop.getProperty(FIRSTNAME));
 		account.setLastname(prop.getProperty(LASTNAME));
-		account.setDepartment(Department.valueOf(prop.getProperty(DEPARTMENT)));
 		try {
 			account.setMailINSA(prop.getProperty(MAIL_INSA));
-		} catch (MailInsaException e) {
-		}
-		account.setViadeo(new URL(prop.getProperty(VIADEO)));
-		account.setLinkedIn(new URL(prop.getProperty(LINKEDIN)));
+		} catch (MailInsaException e) {}
+
+		try {
+			account.setViadeo(new URL(prop.getProperty(VIADEO)));
+		} catch (MalformedURLException e) {}
+		try {
+			account.setLinkedIn(new URL(prop.getProperty(LINKEDIN)));
+		} catch (MalformedURLException e) {}
 
 		is.close();
 		return account;

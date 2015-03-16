@@ -2,7 +2,7 @@
     android:id="@+id/base_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/ic_launcher_grey_big"
+    android:background="#FFFFFF"
     android:padding="10dp" >
 
     <LinearLayout
@@ -14,8 +14,9 @@
             android:id="@+id/name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/pending"
             android:textIsSelectable="true"
+            android:textSize="18sp"
             android:textStyle="italic" />
 
         <Button

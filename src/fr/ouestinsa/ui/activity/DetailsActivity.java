@@ -1,9 +1,5 @@
 package fr.ouestinsa.ui.activity;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -13,10 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import fr.ouestinsa.R;
 import fr.ouestinsa.db.StudyDAO;
-import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.network.ApplyStudy;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
@@ -46,7 +40,7 @@ public class DetailsActivity extends ActionBarActivity implements
 
 		new Thread(new GetDetails(this, new Handler(), study)).start();
 
-		((TextView) findViewById(R.id.name)).setText(study.getName());
+		((TextView) findViewById(R.id.name)).setText("Numéro de l'étude : " + study.getId());
 
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);
@@ -58,8 +52,6 @@ public class DetailsActivity extends ActionBarActivity implements
 		scrollView.setOnTouchListener(new OnSwipeTouchListener(this) {
 			public void onSwipeRight() {
 				finish();
-				overridePendingTransition(android.R.anim.fade_in,
-						android.R.anim.slide_out_right);
 			}
 		});
 	}
@@ -69,8 +61,6 @@ public class DetailsActivity extends ActionBarActivity implements
 		int itemId = item.getItemId();
 		if (itemId == android.R.id.home) {
 			finish();
-			overridePendingTransition(android.R.anim.fade_in,
-					android.R.anim.slide_out_right);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -81,26 +71,7 @@ public class DetailsActivity extends ActionBarActivity implements
 	public void onClick(View v) {
 		int id = v.getId();
 		if (id == R.id.apply) {
-			try {
-				Exception e = new ApplyStudy().executeOnExecutor(
-						AsyncTask.THREAD_POOL_EXECUTOR, this).get();
-				if (e != null
-						&& (e instanceof AccountNotFillException || e instanceof IOException)) {
-					Toast.makeText(this, R.string.error_account_not_fill,
-							Toast.LENGTH_SHORT).show();
-				} else if (e != null) {
-					Toast.makeText(this, R.string.error_apply,
-							Toast.LENGTH_SHORT).show();
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_SHORT)
-						.show();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-				Toast.makeText(this, R.string.error_apply, Toast.LENGTH_SHORT)
-						.show();
-			}
+			new Thread(new ApplyStudy(study, this, new Handler())).start();
 		}
 	}
 
@@ -114,12 +85,5 @@ public class DetailsActivity extends ActionBarActivity implements
 
 	public void addDetailsToDB() {
 		studyDAO.addDetails(study.getId(), study.getDetails());
-	}
-
-	@Override
-	public void onBackPressed() {
-		finish();
-		overridePendingTransition(android.R.anim.fade_in,
-				android.R.anim.slide_out_right);
 	}
 }

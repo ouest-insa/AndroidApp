@@ -5,8 +5,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,8 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import fr.ouestinsa.R;
+import fr.ouestinsa.db.AccountDAO;
 import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
@@ -40,6 +39,8 @@ public class MainActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		AccountDAO.getInstance(this); // Just to place the context
 
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -60,19 +61,13 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
 		if (itemId == R.id.website) {
-			if (!isNetworkConnected()) {
-				Toast.makeText(this, R.string.error_internet_connection,
-						Toast.LENGTH_SHORT).show();
-			} else {
-				Intent i = new Intent(MainActivity.this, WebviewActivity.class);
-				startActivity(i);
-			}
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://ouest-insa.fr"));
+			startActivity(browserIntent);
 			return true;
 		} else if (itemId == R.id.account) {
 			Intent i = new Intent(MainActivity.this, AccountActivity.class);
 			startActivity(i);
-			overridePendingTransition(android.R.anim.slide_in_left,
-					android.R.anim.fade_out);
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -100,16 +95,6 @@ public class MainActivity extends ActionBarActivity implements
 				mSwipeRefreshLayout.setRefreshing(true);
 			}
 		});
-	}
-
-	private boolean isNetworkConnected() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo ni = cm.getActiveNetworkInfo();
-		if (ni == null) {
-			// There are no active networks.
-			return false;
-		} else
-			return true;
 	}
 
 	public void setStudies() {
@@ -166,8 +151,6 @@ public class MainActivity extends ActionBarActivity implements
 						DetailsActivity.class);
 				i.putExtra(StudyDAO.ID, String.valueOf(selectedStudy.getId()));
 				startActivity(i);
-				overridePendingTransition(android.R.anim.slide_in_left,
-						android.R.anim.fade_out);
 			}
 		});
 	}

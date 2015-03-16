@@ -8,40 +8,52 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
+import android.app.Activity;
+import android.os.Handler;
+import android.widget.Toast;
+import fr.ouestinsa.R;
 import fr.ouestinsa.db.AccountDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.object.Account;
-import fr.ouestinsa.ui.activity.DetailsActivity;
+import fr.ouestinsa.object.Study;
 
-public class ApplyStudy extends AsyncTask<DetailsActivity, Void, Exception> {
+public class ApplyStudy implements Runnable {
 	public static final String API_URL_APPLY_STUDY = Retrieve.API_URL + "study";
-
-	@Override
-	protected Exception doInBackground(DetailsActivity... activity) {
-		Exception e = null;
-		try {
-			JSONObject dataJSON = getJSON(activity[0]);
-			postJSON(dataJSON);
-		} catch (IOException e1) {
-			e = e1;
-		} catch (JSONException e1) {
-			e = e1;
-		} catch (AccountNotFillException e1) {
-			e = e1;
-		}
-		return e;
+	private Study study;
+	private Activity a;
+	private Handler mHandler;
+	
+	public ApplyStudy(Study study, Activity a, Handler mHandler) {
+		this.study = study;
+		this.a = a;
+		this.mHandler = mHandler;
 	}
 
-	private JSONObject getJSON(DetailsActivity activity) throws IOException,
+	@Override
+	public void run() {
+		try {
+			JSONObject dataJSON = getJSON();
+			postJSON(dataJSON);
+		} catch (IOException e1) {
+			sendToast(R.string.error_apply);
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			sendToast(R.string.error_apply);
+			e1.printStackTrace();
+		} catch (AccountNotFillException e1) {
+			sendToast(R.string.error_account_not_fill);
+			e1.printStackTrace();
+		}
+	}
+
+	private JSONObject getJSON() throws IOException,
 			JSONException, AccountNotFillException {
 		JSONObject dataJSON = new JSONObject();
 		
-		AccountDAO accountDAO = AccountDAO.getInstance(activity);
-		Account account = null;
-		account = accountDAO.load();
+		AccountDAO accountDAO = AccountDAO.getInstance(a);
+		Account account = accountDAO.load();
 		
-		dataJSON.put("study", activity.getCurrentStudy().toJSON());
+		dataJSON.put("study", study.toJSON());
 		dataJSON.put("student", account.toJSON());
 
 		return dataJSON;
@@ -66,5 +78,14 @@ public class ApplyStudy extends AsyncTask<DetailsActivity, Void, Exception> {
 		wr.close();
 		con.getResponseCode();
 		con.disconnect();
+	}
+	
+	private void sendToast(final int ressourceString) {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(a, ressourceString, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 }

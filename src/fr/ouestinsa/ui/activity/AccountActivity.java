@@ -46,8 +46,8 @@ public class AccountActivity extends ActionBarActivity {
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, new ArrayList(
-						Arrays.asList(departments)));
+				R.layout.spinner_item,
+				new ArrayList(Arrays.asList(departments)));
 
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		department.setAdapter(adapter);
@@ -88,8 +88,6 @@ public class AccountActivity extends ActionBarActivity {
 		int itemId = item.getItemId();
 		if (itemId == android.R.id.home) {
 			finish();
-			overridePendingTransition(android.R.anim.fade_in,
-					android.R.anim.slide_out_right);
 			return true;
 		} else if (itemId == R.id.save) {
 			try {
@@ -99,16 +97,18 @@ public class AccountActivity extends ActionBarActivity {
 				account.setFirstname(firstname.getText().toString());
 				account.setLastname(lastname.getText().toString());
 				account.setMailINSA(mailINSA.getText().toString());
-				account.setViadeo(new URL(viadeo.getText().toString()));
-				account.setLinkedIn(new URL(linkedIn.getText().toString()));
+				if(viadeo.getText() != null && !viadeo.getText().toString().equals("")) {
+					account.setViadeo(new URL(viadeo.getText().toString()));
+				}
+				if(linkedIn.getText() != null && !linkedIn.getText().toString().equals("")) {
+					account.setLinkedIn(new URL(linkedIn.getText().toString()));
+				}
 				AccountDAO accountDAO = AccountDAO.getInstance(this);
 				accountDAO.save(account);
 
 				Toast.makeText(this, R.string.succed_save_account,
 						Toast.LENGTH_SHORT).show();
 				finish();
-				overridePendingTransition(android.R.anim.fade_in,
-						android.R.anim.slide_out_right);
 			} catch (AccountNotFillException e) {
 				Toast.makeText(this, R.string.error_account_not_fill,
 						Toast.LENGTH_SHORT).show();
@@ -128,12 +128,5 @@ public class AccountActivity extends ActionBarActivity {
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		finish();
-		overridePendingTransition(android.R.anim.fade_in,
-				android.R.anim.slide_out_right);
 	}
 }
