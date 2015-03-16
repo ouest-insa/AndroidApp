@@ -7,6 +7,7 @@
     <string name="account">Profil</string>
     <string name="website">Qui sommes-nous ?</string>
     <string name="apply">Postuler</string>
+    <string name="already_apply">Demande envoyée</string>
     <string name="success_update">Mise à jour avec succès</string>
     <string name="success_apply">Demande envoyée</string>
     <string name="error_internet_connection">Vérifiez la connexion et réessayez</string>

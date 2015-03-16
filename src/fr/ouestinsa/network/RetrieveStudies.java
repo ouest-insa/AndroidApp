@@ -58,6 +58,7 @@ public class RetrieveStudies extends Retrieve<JSONArray> {
 		Study study = new Study();
 
 		study.setId(jsonObject.getInt(StudyDAO.ID));
+		study.setReference(jsonObject.getInt(StudyDAO.REFERENCE));
 		try {
 			study.setJeh(jsonObject.getInt(StudyDAO.JEH));
 		} catch (JSONException e) {

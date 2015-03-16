@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fr.ouestinsa.R;
 import fr.ouestinsa.db.AccountDAO;
+import fr.ouestinsa.db.ApplicableDAO;
 import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.object.Status;
 import fr.ouestinsa.object.Study;
@@ -41,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements
 		setContentView(R.layout.activity_main);
 		
 		AccountDAO.getInstance(this); // Just to place the context
+		ApplicableDAO.getInstance(this); // Just to place the context
 
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -149,7 +151,7 @@ public class MainActivity extends ActionBarActivity implements
 
 				Intent i = new Intent(getApplicationContext(),
 						DetailsActivity.class);
-				i.putExtra(StudyDAO.ID, String.valueOf(selectedStudy.getId()));
+				i.putExtra(StudyDAO.REFERENCE, String.valueOf(selectedStudy.getReference()));
 				startActivity(i);
 			}
 		});

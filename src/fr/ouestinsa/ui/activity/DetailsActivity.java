@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import fr.ouestinsa.R;
+import fr.ouestinsa.db.ApplicableDAO;
 import fr.ouestinsa.db.StudyDAO;
 import fr.ouestinsa.network.ApplyStudy;
 import fr.ouestinsa.object.Status;
@@ -31,7 +32,7 @@ public class DetailsActivity extends ActionBarActivity implements
 
 		studyDAO = StudyDAO.getInstance(this);
 		study = studyDAO.get(Integer.valueOf(getIntent().getStringExtra(
-				StudyDAO.ID)));
+				StudyDAO.REFERENCE)));
 
 		details = (TextView) findViewById(R.id.details);
 		if (study.getDetails() != null && !study.getDetails().equals("")) {
@@ -45,9 +46,14 @@ public class DetailsActivity extends ActionBarActivity implements
 		((TextView) findViewById(R.id.name)).setText(study.getType());
 
 		if (study.getStatus().equals(Status.CONTACT)) {
-			((Button) findViewById(R.id.apply)).setOnClickListener(this);
-		} else {
-			((Button) findViewById(R.id.apply)).setEnabled(false);
+			Button apply = (Button) findViewById(R.id.apply);
+			
+			apply.setOnClickListener(this);
+			if(ApplicableDAO.getInstance(this).isApplicable(study)) {
+				apply.setEnabled(true);
+			} else {
+				apply.setText(R.string.already_apply);
+			}
 		}
 
 		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);
@@ -81,11 +87,17 @@ public class DetailsActivity extends ActionBarActivity implements
 		return study;
 	}
 
-	public void setDetails(String details) {
-		this.details.setText(details);
+	public void setDetails(String str) {
+		details.setText(str);
+	}
+
+	public void disableButton() {
+		Button apply = (Button) findViewById(R.id.apply);
+		apply.setEnabled(false);
+		apply.setText(R.string.already_apply);
 	}
 
 	public void addDetailsToDB() {
-		studyDAO.addDetails(study.getId(), study.getDetails());
+		studyDAO.addDetails(study.getReference(), study.getDetails());
 	}
 }

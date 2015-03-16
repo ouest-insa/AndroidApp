@@ -1,6 +1,7 @@
 package fr.ouestinsa.network;
 
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -8,22 +9,23 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.widget.Toast;
 import fr.ouestinsa.R;
 import fr.ouestinsa.db.AccountDAO;
+import fr.ouestinsa.db.ApplicableDAO;
 import fr.ouestinsa.exception.AccountNotFillException;
 import fr.ouestinsa.object.Account;
 import fr.ouestinsa.object.Study;
+import fr.ouestinsa.ui.activity.DetailsActivity;
 
 public class ApplyStudy implements Runnable {
 	public static final String API_URL_APPLY_STUDY = Retrieve.API_URL + "study";
 	private Study study;
-	private Activity a;
+	private DetailsActivity a;
 	private Handler mHandler;
-	
-	public ApplyStudy(Study study, Activity a, Handler mHandler) {
+
+	public ApplyStudy(Study study, DetailsActivity a, Handler mHandler) {
 		this.study = study;
 		this.a = a;
 		this.mHandler = mHandler;
@@ -34,26 +36,36 @@ public class ApplyStudy implements Runnable {
 		try {
 			JSONObject dataJSON = getJSON();
 			postJSON(dataJSON);
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					a.disableButton();
+					ApplicableDAO.getInstance(null).justApply(study);
+				}
+			});
 			sendToast(R.string.success_apply);
-		} catch (IOException e1) {
-			sendToast(R.string.error_apply);
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			sendToast(R.string.error_apply);
+		} catch (FileNotFoundException e1) {
+			sendToast(R.string.error_account_not_fill);
 			e1.printStackTrace();
 		} catch (AccountNotFillException e1) {
 			sendToast(R.string.error_account_not_fill);
 			e1.printStackTrace();
+		} catch (JSONException e1) {
+			sendToast(R.string.error_apply);
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			sendToast(R.string.error_apply);
+			e1.printStackTrace();
 		}
 	}
 
-	private JSONObject getJSON() throws IOException,
-			JSONException, AccountNotFillException {
+	private JSONObject getJSON() throws IOException, JSONException,
+			AccountNotFillException {
 		JSONObject dataJSON = new JSONObject();
-		
+
 		AccountDAO accountDAO = AccountDAO.getInstance(a);
 		Account account = accountDAO.load();
-		
+
 		dataJSON.put("study", study.toJSON());
 		dataJSON.put("student", account.toJSON());
 
@@ -62,9 +74,9 @@ public class ApplyStudy implements Runnable {
 
 	private void postJSON(JSONObject dataJSON) throws IOException {
 		String data = dataJSON.toString();
-		String requestBody = new String(data.getBytes(),"UTF-8");
+		String requestBody = new String(data.getBytes(), "ISO-8859-1");
 		int lngth = requestBody.length();
-		
+
 		URL url = new URL(API_URL_APPLY_STUDY);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setDoOutput(true);
@@ -83,7 +95,7 @@ public class ApplyStudy implements Runnable {
 		con.getResponseCode();
 		con.disconnect();
 	}
-	
+
 	private void sendToast(final int ressourceString) {
 		mHandler.post(new Runnable() {
 			@Override

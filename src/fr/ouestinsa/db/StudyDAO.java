@@ -18,6 +18,7 @@ public class StudyDAO {
 	public static final String NAME_TABLE = "Study";
 	
 	public static final String ID = "id";
+	public static final String REFERENCE = "reference";
 	public static final String JEH = "jeh";
 	public static final String NAME = "name";
 	public static final String STATUS = "status";
@@ -28,7 +29,8 @@ public class StudyDAO {
 	
 	public static final String CREATE_TABLE = 
 			"CREATE TABLE " + NAME_TABLE + " ("
-					+ ID + " INTEGER NOT NULL UNIQUE, "
+					+ ID + " INTEGER NOT NULL, "
+					+ REFERENCE + " INTEGER NOT NULL UNIQUE, "
 					+ JEH + " INTEGER, "
 					+ NAME + " TEXT NOT NULL, "
 					+ STATUS + " TEXT NOT NULL, "
@@ -62,6 +64,7 @@ public class StudyDAO {
 	public boolean add(Study study) {
 		ContentValues values = new ContentValues();
 		values.put(ID, study.getId());
+		values.put(REFERENCE, study.getReference());
 		values.put(JEH, study.getJeh());
 		values.put(NAME, study.getName());
 		values.put(STATUS, study.getStatus().toString());
@@ -82,7 +85,11 @@ public class StudyDAO {
 		ContentValues values = new ContentValues();
 		values.put(DETAILS, details);
 		
-		return db.update(NAME_TABLE, values, ID + " = ?", new String[] {String.valueOf(id)});
+		return db.update(
+				NAME_TABLE, 
+				values, 
+				REFERENCE + " = ?", 
+				new String[] {String.valueOf(id)});
 	}
 
 	public List<Study> getAll() {
@@ -97,6 +104,7 @@ public class StudyDAO {
 		while(c.moveToNext()) {
 			Study study = new Study();
 			study.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
+			study.setReference(c.getInt(c.getColumnIndexOrThrow(REFERENCE)));
 			study.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
 			study.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
 			study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));
@@ -109,18 +117,19 @@ public class StudyDAO {
 		return list;
 	}
 
-	public Study get(int id) {
+	public Study get(int reference) {
 		Cursor c = db.rawQuery(
 				"SELECT *" +
 				" FROM " + NAME_TABLE + "" +
-				" WHERE " + ID + " = ?", 
-				new String[]{String.valueOf(id)});
+				" WHERE " + REFERENCE + " = ?", 
+				new String[]{String.valueOf(reference)});
 		if(c == null || c.getCount() == 0) {
 			return null;
 		}
 		c.moveToNext();
 		Study study = new Study();
 		study.setId(c.getInt(c.getColumnIndexOrThrow(ID)));
+		study.setReference(c.getInt(c.getColumnIndexOrThrow(REFERENCE)));
 		study.setJeh(c.getInt(c.getColumnIndexOrThrow(JEH)));
 		study.setName(c.getString(c.getColumnIndexOrThrow(NAME)));
 		study.setStatus(Status.valueOf(c.getString(c.getColumnIndexOrThrow(STATUS))));

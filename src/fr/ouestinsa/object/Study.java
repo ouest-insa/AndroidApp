@@ -7,6 +7,7 @@ import fr.ouestinsa.db.StudyDAO;
 
 public class Study {
 	private int id;
+	private int reference;
 	private int jeh;
 	private String name;
 	private Status status;
@@ -20,6 +21,14 @@ public class Study {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getReference() {
+		return reference;
+	}
+
+	public void setReference(int reference) {
+		this.reference = reference;
 	}
 
 	public int getJeh() {
@@ -73,10 +82,12 @@ public class Study {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put(StudyDAO.ID, id);
+		json.put(StudyDAO.REFERENCE, reference);
 		json.put(StudyDAO.JEH, jeh);
 		json.put(StudyDAO.NAME, name);
 		json.put(StudyDAO.STATUS, status);
 		json.put(StudyDAO.TYPE, type);
+		json.put(StudyDAO.TYPE_ID, typeId);
 		return json;
 	}
 }

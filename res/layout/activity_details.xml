@@ -45,6 +45,7 @@
             android:background="@drawable/blue_button"
             android:drawableLeft="@drawable/ic_action_accept"
             android:drawableStart="@drawable/ic_action_accept"
+            android:enabled="false"
             android:text="@string/apply"
             android:textColor="@color/white" />
     </LinearLayout>

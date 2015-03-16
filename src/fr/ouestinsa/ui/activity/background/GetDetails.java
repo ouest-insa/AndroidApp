@@ -37,10 +37,10 @@ public class GetDetails implements Runnable {
 						a.setDetails(a.getString(R.string.no_details));
 					} else {
 						a.setDetails(study.getDetails());
+						a.addDetailsToDB();
 					}
 				}
 			});
-			a.addDetailsToDB();
 		} catch (InterruptedException e) {
 			mHandler.post(new Runnable() {
 				@Override

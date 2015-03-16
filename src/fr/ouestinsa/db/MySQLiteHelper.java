@@ -29,11 +29,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	private void createStudy(SQLiteDatabase db) {
 		db.execSQL(StudyDAO.CREATE_TABLE);
 		db.execSQL(StudyDAO.CREATE_INDEX_1);
+		db.execSQL(ApplicableDAO.CREATE_TABLE);
+		db.execSQL(ApplicableDAO.CREATE_INDEX_1);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(StudyDAO.DELETE_TABLE);
+		db.execSQL(ApplicableDAO.DELETE_TABLE);
 		onCreate(db);
 	}
 
