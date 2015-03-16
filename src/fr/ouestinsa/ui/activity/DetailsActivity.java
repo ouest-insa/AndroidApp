@@ -40,7 +40,9 @@ public class DetailsActivity extends ActionBarActivity implements
 
 		new Thread(new GetDetails(this, new Handler(), study)).start();
 
-		((TextView) findViewById(R.id.name)).setText("Numéro de l'étude : " + study.getId());
+
+		((TextView) findViewById(R.id.number)).setText("Étude n°" + study.getId());
+		((TextView) findViewById(R.id.name)).setText(study.getType());
 
 		if (study.getStatus().equals(Status.CONTACT)) {
 			((Button) findViewById(R.id.apply)).setOnClickListener(this);

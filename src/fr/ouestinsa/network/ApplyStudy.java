@@ -34,6 +34,7 @@ public class ApplyStudy implements Runnable {
 		try {
 			JSONObject dataJSON = getJSON();
 			postJSON(dataJSON);
+			sendToast(R.string.success_apply);
 		} catch (IOException e1) {
 			sendToast(R.string.error_apply);
 			e1.printStackTrace();
@@ -60,6 +61,10 @@ public class ApplyStudy implements Runnable {
 	}
 
 	private void postJSON(JSONObject dataJSON) throws IOException {
+		String data = dataJSON.toString();
+		String requestBody = new String(data.getBytes(),"UTF-8");
+		int lngth = requestBody.length();
+		
 		URL url = new URL(API_URL_APPLY_STUDY);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setDoOutput(true);
@@ -68,12 +73,11 @@ public class ApplyStudy implements Runnable {
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("charset", "UTF-8");
-		con.setRequestProperty("Content-Length",
-				Integer.toString(dataJSON.toString().getBytes().length - 2));
+		con.setRequestProperty("Content-Length", ("" + lngth));
 		con.setUseCaches(false);
 
 		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(dataJSON.toString());
+		wr.writeBytes(requestBody);
 		wr.flush();
 		wr.close();
 		con.getResponseCode();
