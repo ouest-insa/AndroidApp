@@ -1,4 +1,4 @@
-package fr.ouestinsa.network;
+package fr.ouest_insa.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import fr.ouestinsa.db.StudyDAO;
-import fr.ouestinsa.object.Study;
+import fr.ouest_insa.db.StudyDAO;
+import fr.ouest_insa.object.Study;
 
 public class RetrieveStudies extends Retrieve<JSONArray> {
 
@@ -65,7 +65,7 @@ public class RetrieveStudies extends Retrieve<JSONArray> {
 			study.setJeh(-1);
 		}
 		study.setName(jsonObject.getString(StudyDAO.NAME));
-		study.setStatus(fr.ouestinsa.object.Status.valueOf(jsonObject
+		study.setStatus(fr.ouest_insa.object.Status.valueOf(jsonObject
 				.getString(StudyDAO.STATUS).toUpperCase()));
 		study.setType(jsonObject.getString(StudyDAO.TYPE));
 		study.setTypeId(jsonObject.getInt(StudyDAO.TYPE_ID));

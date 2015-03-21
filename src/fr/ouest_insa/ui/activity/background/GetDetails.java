@@ -1,12 +1,12 @@
-package fr.ouestinsa.ui.activity.background;
+package fr.ouest_insa.ui.activity.background;
 
 import android.os.Handler;
 import android.widget.Toast;
-import fr.ouestinsa.R;
-import fr.ouestinsa.network.Retrieve;
-import fr.ouestinsa.network.RetrieveDetails;
-import fr.ouestinsa.object.Study;
-import fr.ouestinsa.ui.activity.DetailsActivity;
+import fr.ouest_insa.R;
+import fr.ouest_insa.network.Retrieve;
+import fr.ouest_insa.network.RetrieveDetails;
+import fr.ouest_insa.object.Study;
+import fr.ouest_insa.ui.activity.DetailsActivity;
 
 public class GetDetails implements Runnable {
 	private DetailsActivity a;

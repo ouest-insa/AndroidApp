@@ -4,19 +4,10 @@
     android:background="#FFFFFF"
     android:padding="8dp" >
 
-    <Spinner
-        android:id="@+id/department"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:prompt="@string/department"
-        android:layout_marginRight="100dp"
-        android:layout_marginEnd="100dp" />
-
     <EditText
         android:id="@+id/firstname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/department"
         android:layout_marginRight="100dp"
         android:layout_marginEnd="100dp"
         android:hint="@string/firstname"
@@ -34,11 +25,20 @@
         android:inputType="textPersonName"
         android:textSize="18sp" />
 
+    <Spinner
+        android:id="@+id/department"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lastname"
+        android:layout_marginRight="100dp"
+        android:layout_marginEnd="100dp"
+        android:prompt="@string/department" />
+
     <EditText
         android:id="@+id/mailINSA"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lastname"
+        android:layout_below="@id/department"
         android:hint="@string/mailINSA"
         android:inputType="textEmailAddress"
         android:textSize="18sp" />

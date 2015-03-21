@@ -1,6 +1,6 @@
-package fr.ouestinsa.object;
+package fr.ouest_insa.object;
 
-import fr.ouestinsa.R;
+import fr.ouest_insa.R;
 
 public enum TypesStudy {
 	ELECTRONIQUE(1, R.drawable.fa_plug), 

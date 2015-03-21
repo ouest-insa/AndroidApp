@@ -1,10 +1,10 @@
-package fr.ouestinsa.db;
+package fr.ouest_insa.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import fr.ouestinsa.object.Study;
+import fr.ouest_insa.object.Study;
 
 public class ApplicableDAO {
 	private SQLiteDatabase db = null;

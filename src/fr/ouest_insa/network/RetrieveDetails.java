@@ -1,4 +1,4 @@
-package fr.ouestinsa.network;
+package fr.ouest_insa.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +10,6 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class RetrieveDetails extends Retrieve<JSONObject> {
 	public RetrieveDetails(String url) {
 		super(url);
@@ -22,7 +20,6 @@ public class RetrieveDetails extends Retrieve<JSONObject> {
 		try {
 			return json.getString("summary");
 		} catch (JSONException e) {
-			Log.e("CC", e.getMessage());
 			e.printStackTrace();
 		}
 		return null;

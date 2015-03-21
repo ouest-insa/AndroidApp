@@ -1,10 +1,12 @@
-package fr.ouestinsa.ui.activity;
+package fr.ouest_insa.ui.activity;
 
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,14 +26,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import fr.ouestinsa.R;
-import fr.ouestinsa.db.AccountDAO;
-import fr.ouestinsa.db.ApplicableDAO;
-import fr.ouestinsa.db.StudyDAO;
-import fr.ouestinsa.object.Status;
-import fr.ouestinsa.object.Study;
-import fr.ouestinsa.object.TypesStudy;
-import fr.ouestinsa.ui.activity.background.GetStudies;
+import fr.ouest_insa.R;
+import fr.ouest_insa.db.AccountDAO;
+import fr.ouest_insa.db.ApplicableDAO;
+import fr.ouest_insa.db.StudyDAO;
+import fr.ouest_insa.object.Status;
+import fr.ouest_insa.object.Study;
+import fr.ouest_insa.object.TypesStudy;
+import fr.ouest_insa.ui.activity.background.GetStudies;
 
 public class MainActivity extends ActionBarActivity implements
 		OnRefreshListener {
@@ -49,9 +51,11 @@ public class MainActivity extends ActionBarActivity implements
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
 
-		openSwipeRefresh();
 		setStudies();
-		new Thread(new GetStudies(this, new Handler())).start();
+		if (isOnline()) {
+			openSwipeRefresh();
+			new Thread(new GetStudies(this, new Handler())).start();
+		}
 	}
 
 	@Override
@@ -101,12 +105,19 @@ public class MainActivity extends ActionBarActivity implements
 		});
 	}
 
+	private boolean isOnline() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		return netInfo != null && netInfo.isConnectedOrConnecting();
+	}
+
 	public void setStudies() {
 		StudyDAO studyDAO = StudyDAO.getInstance(this);
 		final List<Study> studies = studyDAO.getAll();
-		
-		if(studies.size() == 0) {
-			((RelativeLayout) findViewById(R.id.connection_impossible)).setVisibility(View.VISIBLE);
+
+		if (studies.size() == 0 && !isOnline()) {
+			((RelativeLayout) findViewById(R.id.connection_impossible))
+					.setVisibility(View.VISIBLE);
 			return;
 		}
 
@@ -119,8 +130,11 @@ public class MainActivity extends ActionBarActivity implements
 				LayoutInflater inflater = (LayoutInflater) parent.getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-				View rowView = inflater.inflate(R.layout.list_study, parent,
-						false);
+				View rowView;// = convertView; // Optimized version
+
+				// if (rowView == null) {
+				rowView = inflater.inflate(R.layout.list_study, parent, false);
+				// }
 
 				ImageView img = (ImageView) rowView.findViewById(R.id.img);
 				TextView jeh = (TextView) rowView.findViewById(R.id.jeh);

@@ -1,4 +1,4 @@
-package fr.ouestinsa.ui;
+package fr.ouest_insa.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

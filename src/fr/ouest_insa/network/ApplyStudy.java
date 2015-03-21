@@ -1,4 +1,4 @@
-package fr.ouestinsa.network;
+package fr.ouest_insa.network;
 
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
@@ -11,13 +11,13 @@ import org.json.JSONObject;
 
 import android.os.Handler;
 import android.widget.Toast;
-import fr.ouestinsa.R;
-import fr.ouestinsa.db.AccountDAO;
-import fr.ouestinsa.db.ApplicableDAO;
-import fr.ouestinsa.exception.AccountNotFillException;
-import fr.ouestinsa.object.Account;
-import fr.ouestinsa.object.Study;
-import fr.ouestinsa.ui.activity.DetailsActivity;
+import fr.ouest_insa.R;
+import fr.ouest_insa.db.AccountDAO;
+import fr.ouest_insa.db.ApplicableDAO;
+import fr.ouest_insa.exception.AccountNotFillException;
+import fr.ouest_insa.object.Account;
+import fr.ouest_insa.object.Study;
+import fr.ouest_insa.ui.activity.DetailsActivity;
 
 public class ApplyStudy implements Runnable {
 	public static final String API_URL_APPLY_STUDY = Retrieve.API_URL + "study";
@@ -39,21 +39,25 @@ public class ApplyStudy implements Runnable {
 			mHandler.post(new Runnable() {
 				@Override
 				public void run() {
-					a.disableButton();
+					a.updateButton(false, R.string.already_apply);
 					ApplicableDAO.getInstance(null).justApply(study);
 				}
 			});
 			sendToast(R.string.success_apply);
 		} catch (FileNotFoundException e1) {
+			resetButton();
 			sendToast(R.string.error_account_not_fill);
 			e1.printStackTrace();
 		} catch (AccountNotFillException e1) {
+			resetButton();
 			sendToast(R.string.error_account_not_fill);
 			e1.printStackTrace();
 		} catch (JSONException e1) {
+			resetButton();
 			sendToast(R.string.error_apply);
 			e1.printStackTrace();
 		} catch (IOException e1) {
+			resetButton();
 			sendToast(R.string.error_apply);
 			e1.printStackTrace();
 		}
@@ -101,6 +105,15 @@ public class ApplyStudy implements Runnable {
 			@Override
 			public void run() {
 				Toast.makeText(a, ressourceString, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	private void resetButton() {
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				a.updateButton(true, R.string.apply);
 			}
 		});
 	}

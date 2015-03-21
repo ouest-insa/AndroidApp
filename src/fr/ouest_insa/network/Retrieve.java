@@ -1,4 +1,4 @@
-package fr.ouestinsa.network;
+package fr.ouest_insa.network;
 
 import java.io.IOException;
 import java.io.Reader;

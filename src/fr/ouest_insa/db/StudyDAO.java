@@ -1,4 +1,4 @@
-package fr.ouestinsa.db;
+package fr.ouest_insa.db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import fr.ouestinsa.object.Status;
-import fr.ouestinsa.object.Study;
+import fr.ouest_insa.object.Status;
+import fr.ouest_insa.object.Study;
 
 public class StudyDAO {
 	private SQLiteDatabase db = null;

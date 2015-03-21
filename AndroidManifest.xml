@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fr.ouestinsa"
-    android:versionCode="1"
+    package="fr.ouest_insa"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -17,17 +17,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="fr.ouestinsa.ui.activity.MainActivity" >
+        <activity android:name="fr.ouest_insa.ui.activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="fr.ouestinsa.ui.activity.DetailsActivity" >
+        <activity android:name="fr.ouest_insa.ui.activity.DetailsActivity" >
         </activity>
         <activity
-            android:name="fr.ouestinsa.ui.activity.AccountActivity"
+            android:name="fr.ouest_insa.ui.activity.AccountActivity"
             android:label="@string/account_activity_title" >
         </activity>
     </application>

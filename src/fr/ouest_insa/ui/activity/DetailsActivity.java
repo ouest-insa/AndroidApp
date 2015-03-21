@@ -1,4 +1,4 @@
-package fr.ouestinsa.ui.activity;
+package fr.ouest_insa.ui.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,14 +9,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import fr.ouestinsa.R;
-import fr.ouestinsa.db.ApplicableDAO;
-import fr.ouestinsa.db.StudyDAO;
-import fr.ouestinsa.network.ApplyStudy;
-import fr.ouestinsa.object.Status;
-import fr.ouestinsa.object.Study;
-import fr.ouestinsa.ui.OnSwipeTouchListener;
-import fr.ouestinsa.ui.activity.background.GetDetails;
+import fr.ouest_insa.R;
+import fr.ouest_insa.db.ApplicableDAO;
+import fr.ouest_insa.db.StudyDAO;
+import fr.ouest_insa.network.ApplyStudy;
+import fr.ouest_insa.object.Status;
+import fr.ouest_insa.object.Study;
+import fr.ouest_insa.ui.OnSwipeTouchListener;
+import fr.ouest_insa.ui.activity.background.GetDetails;
 
 public class DetailsActivity extends ActionBarActivity implements
 		OnClickListener {
@@ -79,6 +79,7 @@ public class DetailsActivity extends ActionBarActivity implements
 	public void onClick(View v) {
 		int id = v.getId();
 		if (id == R.id.apply) {
+			updateButton(false, R.string.in_progress);
 			new Thread(new ApplyStudy(study, this, new Handler())).start();
 		}
 	}
@@ -91,10 +92,10 @@ public class DetailsActivity extends ActionBarActivity implements
 		details.setText(str);
 	}
 
-	public void disableButton() {
+	public void updateButton(boolean enable, int stringRessource) {
 		Button apply = (Button) findViewById(R.id.apply);
-		apply.setEnabled(false);
-		apply.setText(R.string.already_apply);
+		apply.setEnabled(enable);
+		apply.setText(stringRessource);
 	}
 
 	public void addDetailsToDB() {

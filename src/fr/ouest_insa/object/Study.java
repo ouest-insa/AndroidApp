@@ -1,9 +1,9 @@
-package fr.ouestinsa.object;
+package fr.ouest_insa.object;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.ouestinsa.db.StudyDAO;
+import fr.ouest_insa.db.StudyDAO;
 
 public class Study {
 	private int id;

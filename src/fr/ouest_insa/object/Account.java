@@ -1,4 +1,4 @@
-package fr.ouestinsa.object;
+package fr.ouest_insa.object;
 
 import java.net.URL;
 import java.util.regex.Pattern;
@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.ouestinsa.db.AccountDAO;
-import fr.ouestinsa.exception.AccountNotFillException;
-import fr.ouestinsa.exception.MailInsaException;
+import fr.ouest_insa.db.AccountDAO;
+import fr.ouest_insa.exception.AccountNotFillException;
+import fr.ouest_insa.exception.MailInsaException;
 
 public class Account {
 	private String firstname;

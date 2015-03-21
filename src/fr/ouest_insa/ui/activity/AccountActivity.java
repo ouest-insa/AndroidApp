@@ -1,4 +1,4 @@
-package fr.ouestinsa.ui.activity;
+package fr.ouest_insa.ui.activity;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,12 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import fr.ouestinsa.R;
-import fr.ouestinsa.db.AccountDAO;
-import fr.ouestinsa.exception.AccountNotFillException;
-import fr.ouestinsa.exception.MailInsaException;
-import fr.ouestinsa.object.Account;
-import fr.ouestinsa.object.Department;
+import fr.ouest_insa.R;
+import fr.ouest_insa.db.AccountDAO;
+import fr.ouest_insa.exception.AccountNotFillException;
+import fr.ouest_insa.exception.MailInsaException;
+import fr.ouest_insa.object.Account;
+import fr.ouest_insa.object.Department;
 
 public class AccountActivity extends ActionBarActivity {
 	private Department departments[] = Department.values();

@@ -1,4 +1,4 @@
-package fr.ouestinsa.ui.activity.background;
+package fr.ouest_insa.ui.activity.background;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import fr.ouestinsa.R;
-import fr.ouestinsa.db.StudyDAO;
-import fr.ouestinsa.network.Retrieve;
-import fr.ouestinsa.network.RetrieveStudies;
-import fr.ouestinsa.object.Study;
-import fr.ouestinsa.ui.activity.MainActivity;
+import fr.ouest_insa.R;
+import fr.ouest_insa.db.StudyDAO;
+import fr.ouest_insa.network.Retrieve;
+import fr.ouest_insa.network.RetrieveStudies;
+import fr.ouest_insa.object.Study;
+import fr.ouest_insa.ui.activity.MainActivity;
 
 public class GetStudies implements Runnable {
 	private MainActivity a;

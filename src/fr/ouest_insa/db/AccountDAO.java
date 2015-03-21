@@ -1,4 +1,4 @@
-package fr.ouestinsa.db;
+package fr.ouest_insa.db;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,10 +8,10 @@ import java.net.URL;
 import java.util.Properties;
 
 import android.content.Context;
-import fr.ouestinsa.exception.AccountNotFillException;
-import fr.ouestinsa.exception.MailInsaException;
-import fr.ouestinsa.object.Account;
-import fr.ouestinsa.object.Department;
+import fr.ouest_insa.exception.AccountNotFillException;
+import fr.ouest_insa.exception.MailInsaException;
+import fr.ouest_insa.object.Account;
+import fr.ouest_insa.object.Department;
 
 public class AccountDAO {
 	private static AccountDAO mInstance;
