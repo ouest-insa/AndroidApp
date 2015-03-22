@@ -42,6 +42,26 @@ public class AccountDAO {
 		}
 		return mInstance;
 	}
+	
+	public boolean dbExist() {
+		try {
+			InputStream os = context.openFileInput(FILE_NAME);
+			Properties prop = new Properties();
+			prop.load(os);
+			os.close();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+	
+	public void createDB() throws IOException {
+		OutputStream os = context.openFileOutput(FILE_NAME,
+				Context.MODE_PRIVATE);
+		Properties prop = new Properties();
+		prop.store(os, "Account properties");
+		os.close();
+	}
 
 	/**
 	 * Save the fields of Account in the properties file.

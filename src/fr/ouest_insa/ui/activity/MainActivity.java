@@ -1,5 +1,6 @@
 package fr.ouest_insa.ui.activity;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -32,6 +33,7 @@ import fr.ouest_insa.db.StudyDAO;
 import fr.ouest_insa.object.Status;
 import fr.ouest_insa.object.Study;
 import fr.ouest_insa.object.TypesStudy;
+import fr.ouest_insa.ui.HelpDialog;
 import fr.ouest_insa.ui.activity.background.GetStudies;
 
 /**
@@ -49,8 +51,17 @@ public class MainActivity extends ActionBarActivity implements
 		setContentView(R.layout.activity_main);
 
 		StudyDAO.getInstance(this); // Just to place the context
-		AccountDAO.getInstance(this); // Just to place the context
 		ApplicableDAO.getInstance(this); // Just to place the context
+		AccountDAO accountDAO = AccountDAO.getInstance(this);
+		
+		if(!accountDAO.dbExist()) {
+			new HelpDialog().show(getFragmentManager(), null);
+			try {
+				accountDAO.createDB();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -72,7 +83,10 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		if (itemId == R.id.website) {
+		if (itemId == R.id.help) {
+			new HelpDialog().show(getFragmentManager(), null);
+			return true;
+		} else if (itemId == R.id.website) {
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://ouest-insa.fr"));
 			startActivity(browserIntent);

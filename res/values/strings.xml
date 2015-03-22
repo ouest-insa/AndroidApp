@@ -6,6 +6,7 @@
     <string name="save">Enregistrer</string>
     <string name="account">Profil</string>
     <string name="website">Qui sommes-nous ?</string>
+    <string name="help">Aide</string>
     <string name="apply">Postuler</string>
     <string name="in_progress">En cours&#8230;</string>
     <string name="already_apply">Demande envoyée</string>
@@ -26,5 +27,9 @@
     <string name="mailINSA">Email INSA *</string>
     <string name="viadeo">URL Viadéo</string>
     <string name="linkedIn">URL LinkedIn</string>
+    <string name="help_dialog_text">Merci d\'avoir téléchargé l\'application Ouest INSA.\n
+        Vous avez maintenant la possibilité de découvrir les études en cours à la Junior-Entreprise de l\'INSA Rennes.\n
+        En tant qu\'étudiant, vous avez aussi la possibilité de postuler à certaines de nos études présentées. 
+        Nous vous contacterons par la suite.</string>
 
 </resources>
