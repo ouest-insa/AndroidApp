@@ -22,6 +22,10 @@ import fr.ouest_insa.exception.MailInsaException;
 import fr.ouest_insa.object.Account;
 import fr.ouest_insa.object.Department;
 
+/**
+ * This class allow the user to fill his profile informations.
+ * @author Loïc Pelleau
+ */
 public class AccountActivity extends ActionBarActivity {
 	private Department departments[] = Department.values();
 	private Spinner department;
@@ -54,6 +58,7 @@ public class AccountActivity extends ActionBarActivity {
 
 		Account account = new Account();
 
+		// Try to load the accound informations
 		AccountDAO accountDAO = AccountDAO.getInstance(this);
 		try {
 			account = accountDAO.load();
@@ -91,6 +96,7 @@ public class AccountActivity extends ActionBarActivity {
 			return true;
 		} else if (itemId == R.id.save) {
 			try {
+				// Create a new Account object with te new informations
 				Account account = new Account();
 				account.setDepartment(departments[department
 						.getSelectedItemPosition()]);
@@ -103,6 +109,8 @@ public class AccountActivity extends ActionBarActivity {
 				if(linkedIn.getText() != null && !linkedIn.getText().toString().equals("")) {
 					account.setLinkedIn(new URL(linkedIn.getText().toString()));
 				}
+				
+				// Save the Accound on the phone with the DAO
 				AccountDAO accountDAO = AccountDAO.getInstance(this);
 				accountDAO.save(account);
 

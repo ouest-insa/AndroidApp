@@ -5,6 +5,10 @@ import java.io.Reader;
 
 import org.json.JSONException;
 
+/**
+ * This class run in background to don't stop the UI.<br>
+ * @author Loïc Pelleau
+ */
 public abstract class Retrieve<E> implements Runnable {
 	public static final String API_URL = "http://api.ouest-insa.fr/";
 	public static final String API_URL_GET_STUDIES = API_URL + "study";

@@ -13,6 +13,12 @@ import fr.ouest_insa.exception.MailInsaException;
 import fr.ouest_insa.object.Account;
 import fr.ouest_insa.object.Department;
 
+/**
+ * Write and read the properties of an Account in a <i>.properties</i> file.<br>
+ * Use the pattern singleton to have only one instance.
+ * @see Account
+ * @author Loïc Pelleau
+ */
 public class AccountDAO {
 	private static AccountDAO mInstance;
 	String FILE_NAME = "account.properties";
@@ -37,7 +43,14 @@ public class AccountDAO {
 		return mInstance;
 	}
 
-	public boolean save(Account account) throws IOException,
+	/**
+	 * Save the fields of Account in the properties file.
+	 * @param account Account to save
+	 * @see Account
+	 * @throws IOException
+	 * @throws AccountNotFillException
+	 */
+	public void save(Account account) throws IOException,
 			AccountNotFillException {
 		if (account.getFirstname() == null || account.getFirstname().equals("")
 				|| account.getLastname() == null
@@ -68,9 +81,15 @@ public class AccountDAO {
 		prop.store(os, "Account properties");
 
 		os.close();
-		return false;
 	}
 
+	/**
+	 * Load an Account from the properties file.<br>
+	 * throw an exception if the file doesn't exist.
+	 * @see Account
+	 * @return Account Account loaded from the file
+	 * @throws IOException
+	 */
 	public Account load() throws IOException {
 		InputStream is = context.openFileInput(FILE_NAME);
 

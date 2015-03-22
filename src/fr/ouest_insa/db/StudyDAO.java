@@ -10,6 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import fr.ouest_insa.object.Status;
 import fr.ouest_insa.object.Study;
 
+/**
+ * This class is used to store the data for the studies (including details).<br>
+ * Use the pattern singleton to have only one instance.
+ * @author Loïc Pelleau
+ * @see Study
+ */
 public class StudyDAO {
 	private SQLiteDatabase db = null;
 	private MySQLiteHelper helper = null;
@@ -57,10 +63,18 @@ public class StudyDAO {
 		return mInstance;
 	}
 
+	/**
+	 * Clear all the content of the table.
+	 */
 	public void clear() {
 		db.delete(NAME_TABLE, null, null);
 	}
 
+	/**
+	 * Add a study to the database.
+	 * @param study Study to add
+	 * @return boolean result of the query (false if an error occured)
+	 */
 	public boolean add(Study study) {
 		ContentValues values = new ContentValues();
 		values.put(ID, study.getId());
@@ -81,7 +95,13 @@ public class StudyDAO {
 		}
 	}
 
-	public int addDetails(int id, String details) {
+	/**
+	 * Add the details for the specific study
+	 * @param reference Reference of the study
+	 * @param details Details to add to the study
+	 * @return int result of the query (-1 if an error occured)
+	 */
+	public int addDetails(int reference, String details) {
 		ContentValues values = new ContentValues();
 		values.put(DETAILS, details);
 		
@@ -89,9 +109,13 @@ public class StudyDAO {
 				NAME_TABLE, 
 				values, 
 				REFERENCE + " = ?", 
-				new String[] {String.valueOf(id)});
+				new String[] {String.valueOf(reference)});
 	}
 
+	/**
+	 * Retrieve all the studies from the database
+	 * @return list List of studies from the database
+	 */
 	public List<Study> getAll() {
 
 		List<Study> list = new ArrayList<Study>();
@@ -117,6 +141,11 @@ public class StudyDAO {
 		return list;
 	}
 
+	/**
+	 * retrieve a specific study from the database
+	 * @param reference Reference of the study to retrieve
+	 * @return Study
+	 */
 	public Study get(int reference) {
 		Cursor c = db.rawQuery(
 				"SELECT *" +

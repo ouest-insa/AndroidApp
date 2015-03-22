@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fr.ouest_insa.db.StudyDAO;
+import fr.ouest_insa.exception.AccountNotFillException;
 
 public class Study {
 	private int id;
@@ -78,7 +79,13 @@ public class Study {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	
+
+	/**
+	 * Return a JSONObject corresponding to the current object.
+	 * @return JSONObject Study parsed into JSON
+	 * @throws AccountNotFillException
+	 * @see JSONObject
+	 */
 	public JSONObject toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put(StudyDAO.ID, id);

@@ -2,6 +2,11 @@ package fr.ouest_insa.object;
 
 import fr.ouest_insa.R;
 
+/**
+ * Enum of all types of studies.<br>
+ * For each type correspond an id and a drawable.
+ * @author Loïc Pelleau
+ */
 public enum TypesStudy {
 	ELECTRONIQUE(1, R.drawable.fa_plug), 
 	SITE_WEB(2, R.drawable.fa_laptop), 

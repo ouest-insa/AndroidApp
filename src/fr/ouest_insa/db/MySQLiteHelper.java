@@ -4,6 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * This class create a new database if not already exist.<br>
+ * Change the database version when modify the structure to don't crash the application.<br>
+ * Use the pattern singleton to have only one instance.
+ * @author Loïc Pelleau
+ */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static final int VERSION_DATABASE = 1;
 	public static final String NAME_DATABASE = "Ouest-INSA.db";

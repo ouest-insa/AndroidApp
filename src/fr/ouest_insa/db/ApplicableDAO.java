@@ -6,11 +6,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import fr.ouest_insa.object.Study;
 
+/**
+ * This class enable to know if the user has 
+ * already apply during the X last days.<br> 
+ * Use the pattern singleton to have only one instance.
+ * @author Loïc Pelleau
+ */
 public class ApplicableDAO {
 	private SQLiteDatabase db = null;
 	private MySQLiteHelper helper = null;
 	private static ApplicableDAO mInstance = null;
 	
+	/**
+	 * Number of days where applying to the study is disable
+	 */
 	private static final int nbDaysNotApplicable = 15;
 	
 	public static final String NAME_TABLE = "Applicable";
@@ -40,11 +49,13 @@ public class ApplicableDAO {
 		}
 		return mInstance;
 	}
-
-	public void clear() {
-		db.delete(NAME_TABLE, null, null);
-	}
 	
+	/**
+	 * Search in the table if the user already apply for 
+	 * the specific study during the <b>nbDaysNotApplicable</b> days.
+	 * @param study Study to search
+	 * @return boolean
+	 */
 	public boolean isApplicable(Study study) {
 		Cursor c = db.rawQuery(
 				"SELECT " + TIMESTAMP + 
@@ -61,6 +72,11 @@ public class ApplicableDAO {
 		return (now - lastApply > 1000 * 60 * 60 * 24 * nbDaysNotApplicable) ? true : false;
 	}
 	
+	/**
+	 * Write in the database that the user just applied to the specific study.
+	 * @param study Study to apply
+	 * @return int result of the query (-1 if an error occured)
+	 */
 	public int justApply(Study study) {
 		Cursor c = db.rawQuery(
 				"SELECT " + TIMESTAMP + 

@@ -13,6 +13,11 @@ import fr.ouest_insa.network.RetrieveStudies;
 import fr.ouest_insa.object.Study;
 import fr.ouest_insa.ui.activity.MainActivity;
 
+/**
+ * This Thread allow to separate the action of retrieve 
+ * the list of studies from the UI.
+ * @author Loïc Pelleau
+ */
 public class GetStudies implements Runnable {
 	private MainActivity a;
 	private Handler mHandler;

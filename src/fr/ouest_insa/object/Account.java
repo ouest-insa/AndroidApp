@@ -46,6 +46,12 @@ public class Account {
 		return mailINSA;
 	}
 
+	/**
+	 * Check if the mail address given look like an INSA Rennes mail address using Pattern class.
+	 * @param mailINSA
+	 * @throws MailInsaException
+	 * @see Pattern
+	 */
 	public void setMailINSA(String mailINSA) throws MailInsaException {
 		if (!Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr").matcher(mailINSA).find()) {
 			throw new MailInsaException("Address INSA incorrect");
@@ -69,6 +75,12 @@ public class Account {
 		this.linkedIn = linkedIn;
 	}
 
+	/**
+	 * Return a JSONObject corresponding to the current object.
+	 * @return JSONObject Account parsed into JSON
+	 * @throws AccountNotFillException
+	 * @see JSONObject
+	 */
 	public JSONObject toJSON() throws AccountNotFillException {
 		JSONObject json = new JSONObject();
 		try {

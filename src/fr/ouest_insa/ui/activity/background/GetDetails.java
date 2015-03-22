@@ -8,6 +8,11 @@ import fr.ouest_insa.network.RetrieveDetails;
 import fr.ouest_insa.object.Study;
 import fr.ouest_insa.ui.activity.DetailsActivity;
 
+/**
+ * This Thread allow to separate the action of retrieve 
+ * details of a study from the UI.
+ * @author Loïc Pelleau
+ */
 public class GetDetails implements Runnable {
 	private DetailsActivity a;
 	private Handler mHandler;

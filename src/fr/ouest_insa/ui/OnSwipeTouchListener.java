@@ -8,6 +8,10 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 
+/**
+ * This listener allow to know if the user move his fingers on the screen.
+ * @author Prince - StackOverflow
+ */
 public class OnSwipeTouchListener implements OnTouchListener {
 	private final GestureDetector gestureDetector;
 

@@ -17,6 +17,11 @@ import android.util.Log;
 import fr.ouest_insa.db.StudyDAO;
 import fr.ouest_insa.object.Study;
 
+/**
+ * This class run in background to don't stop the UI.<br>
+ * This class retrieve data from the API with a HTTP request.
+ * @author Loïc Pelleau
+ */
 public class RetrieveStudies extends Retrieve<JSONArray> {
 
 	public RetrieveStudies(String url) {

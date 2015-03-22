@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +34,11 @@ import fr.ouest_insa.object.Study;
 import fr.ouest_insa.object.TypesStudy;
 import fr.ouest_insa.ui.activity.background.GetStudies;
 
+/**
+ * The application begin in this class.<br>
+ * It display the studies in a ListView.
+ * @author Loïc Pelleau
+ */
 public class MainActivity extends ActionBarActivity implements
 		OnRefreshListener {
 	private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -105,12 +109,18 @@ public class MainActivity extends ActionBarActivity implements
 		});
 	}
 
+	/**
+	 * @return The current status of the network connection.
+	 */
 	private boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
 
+	/**
+	 * Display the studies from the database in the ListView.
+	 */
 	public void setStudies() {
 		StudyDAO studyDAO = StudyDAO.getInstance(this);
 		final List<Study> studies = studyDAO.getAll();
@@ -130,11 +140,15 @@ public class MainActivity extends ActionBarActivity implements
 				LayoutInflater inflater = (LayoutInflater) parent.getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-				View rowView;// = convertView; // Optimized version
+				View rowView = inflater.inflate(R.layout.list_study, parent, false);
+				
+				/* Optimized version (but bug on the display)
+				View = convertView;
 
-				// if (rowView == null) {
+				if (rowView == null) {
 				rowView = inflater.inflate(R.layout.list_study, parent, false);
-				// }
+				}
+				*/
 
 				ImageView img = (ImageView) rowView.findViewById(R.id.img);
 				TextView jeh = (TextView) rowView.findViewById(R.id.jeh);
@@ -144,8 +158,7 @@ public class MainActivity extends ActionBarActivity implements
 					img.setImageResource(TypesStudy.forInt(
 							studies.get(position).getTypeId()).getRessource());
 				} catch (IllegalArgumentException e) {
-					Log.e("CC", studies.get(position).getName() + " : "
-							+ studies.get(position).getTypeId());
+					// The default image is displayed
 				}
 				if (studies.get(position).getStatus().equals(Status.CONTACT)) {
 					if (studies.get(position).getJeh() > 0) {

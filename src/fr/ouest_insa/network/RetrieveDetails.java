@@ -10,6 +10,11 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * This class run in background to don't stop the UI.<br>
+ * This class retrieve data from the API with a HTTP request.
+ * @author Loïc Pelleau
+ */
 public class RetrieveDetails extends Retrieve<JSONObject> {
 	public RetrieveDetails(String url) {
 		super(url);

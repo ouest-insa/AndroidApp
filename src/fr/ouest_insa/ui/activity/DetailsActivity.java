@@ -18,6 +18,10 @@ import fr.ouest_insa.object.Study;
 import fr.ouest_insa.ui.OnSwipeTouchListener;
 import fr.ouest_insa.ui.activity.background.GetDetails;
 
+/**
+ * This class display the details for a study and allow the user to apply.
+ * @author Loïc Pelleau
+ */
 public class DetailsActivity extends ActionBarActivity implements
 		OnClickListener {
 	private Study study;
@@ -39,6 +43,7 @@ public class DetailsActivity extends ActionBarActivity implements
 			setDetails(study.getDetails());
 		}
 
+		// Start a new thread to retrieve updated details
 		new Thread(new GetDetails(this, new Handler(), study)).start();
 
 
@@ -56,6 +61,7 @@ public class DetailsActivity extends ActionBarActivity implements
 			}
 		}
 
+		// Allow the user to close the activity with a swipe on right gesture.
 		ScrollView scrollView = (ScrollView) findViewById(R.id.base_layout);
 		scrollView.setOnTouchListener(new OnSwipeTouchListener(this) {
 			public void onSwipeRight() {
