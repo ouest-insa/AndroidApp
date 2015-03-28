@@ -47,16 +47,22 @@ public class Account {
 	}
 
 	/**
-	 * Check if the mail address given look like an INSA Rennes mail address using Pattern class.
+	 * Check if the mail address given look like an INSA Rennes mail address
+	 * using Pattern class.
+	 * 
 	 * @param mailINSA
 	 * @throws MailInsaException
 	 * @see Pattern
 	 */
 	public void setMailINSA(String mailINSA) throws MailInsaException {
-		if (!Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr").matcher(mailINSA).find()) {
-			throw new MailInsaException("Address INSA incorrect");
+		try {
+			if (!Pattern.compile("[a-zA-Z.-]+@insa-rennes\\.fr")
+					.matcher(mailINSA).find()) {
+				throw new MailInsaException("Address INSA incorrect");
+			}
+			this.mailINSA = mailINSA;
+		} catch (NullPointerException e) {
 		}
-		this.mailINSA = mailINSA;
 	}
 
 	public URL getViadeo() {
@@ -77,6 +83,7 @@ public class Account {
 
 	/**
 	 * Return a JSONObject corresponding to the current object.
+	 * 
 	 * @return JSONObject Account parsed into JSON
 	 * @throws AccountNotFillException
 	 * @see JSONObject

@@ -24,6 +24,7 @@ import fr.ouest_insa.object.Department;
 
 /**
  * This class allow the user to fill his profile informations.
+ * 
  * @author Loïc Pelleau
  */
 public class AccountActivity extends ActionBarActivity {
@@ -65,16 +66,21 @@ public class AccountActivity extends ActionBarActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		for (int i = 0; i < departments.length; i++) {
-			if (departments[i].equals(account.getDepartment())) {
-				department.setSelection(i);
-				break;
+		
+		if(account.getDepartment() != null) {
+			for (int i = 0; i < departments.length; i++) {
+				if (departments[i].equals(account.getDepartment())) {
+					department.setSelection(i);
+					break;
+				}
 			}
 		}
-		firstname.setText(account.getFirstname());
-		lastname.setText(account.getLastname());
-		mailINSA.setText(account.getMailINSA());
+		firstname.setText(account.getFirstname() == null ? "" : account
+				.getFirstname().toString());
+		lastname.setText(account.getLastname() == null ? "" : account
+				.getLastname().toString());
+		mailINSA.setText(account.getMailINSA() == null ? "" : account
+				.getMailINSA().toString());
 		viadeo.setText(account.getViadeo() == null ? "" : account.getViadeo()
 				.toString());
 		linkedIn.setText(account.getLinkedIn() == null ? "" : account
@@ -103,13 +109,15 @@ public class AccountActivity extends ActionBarActivity {
 				account.setFirstname(firstname.getText().toString());
 				account.setLastname(lastname.getText().toString());
 				account.setMailINSA(mailINSA.getText().toString());
-				if(viadeo.getText() != null && !viadeo.getText().toString().equals("")) {
+				if (viadeo.getText() != null
+						&& !viadeo.getText().toString().equals("")) {
 					account.setViadeo(new URL(viadeo.getText().toString()));
 				}
-				if(linkedIn.getText() != null && !linkedIn.getText().toString().equals("")) {
+				if (linkedIn.getText() != null
+						&& !linkedIn.getText().toString().equals("")) {
 					account.setLinkedIn(new URL(linkedIn.getText().toString()));
 				}
-				
+
 				// Save the Accound on the phone with the DAO
 				AccountDAO accountDAO = AccountDAO.getInstance(this);
 				accountDAO.save(account);

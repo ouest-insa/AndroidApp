@@ -16,6 +16,7 @@ import fr.ouest_insa.object.Department;
 /**
  * Write and read the properties of an Account in a <i>.properties</i> file.<br>
  * Use the pattern singleton to have only one instance.
+ * 
  * @see Account
  * @author Loïc Pelleau
  */
@@ -42,7 +43,7 @@ public class AccountDAO {
 		}
 		return mInstance;
 	}
-	
+
 	public boolean dbExist() {
 		try {
 			InputStream os = context.openFileInput(FILE_NAME);
@@ -54,7 +55,7 @@ public class AccountDAO {
 			return false;
 		}
 	}
-	
+
 	public void createDB() throws IOException {
 		OutputStream os = context.openFileOutput(FILE_NAME,
 				Context.MODE_PRIVATE);
@@ -65,7 +66,9 @@ public class AccountDAO {
 
 	/**
 	 * Save the fields of Account in the properties file.
-	 * @param account Account to save
+	 * 
+	 * @param account
+	 *            Account to save
 	 * @see Account
 	 * @throws IOException
 	 * @throws AccountNotFillException
@@ -92,11 +95,11 @@ public class AccountDAO {
 		prop.setProperty(MAIL_INSA, account.getMailINSA());
 		try {
 			prop.setProperty(VIADEO, account.getViadeo().toString());
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 		}
 		try {
 			prop.setProperty(LINKEDIN, account.getLinkedIn().toString());
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 		}
 		prop.store(os, "Account properties");
 
@@ -106,6 +109,7 @@ public class AccountDAO {
 	/**
 	 * Load an Account from the properties file.<br>
 	 * throw an exception if the file doesn't exist.
+	 * 
 	 * @see Account
 	 * @return Account Account loaded from the file
 	 * @throws IOException
@@ -117,19 +121,26 @@ public class AccountDAO {
 		prop.load(is);
 
 		Account account = new Account();
-		account.setDepartment(Department.valueOf(prop.getProperty(DEPARTMENT)));
+		try {
+			account.setDepartment(Department.valueOf(prop
+					.getProperty(DEPARTMENT)));
+		} catch (NullPointerException e) {
+		}
 		account.setFirstname(prop.getProperty(FIRSTNAME));
 		account.setLastname(prop.getProperty(LASTNAME));
 		try {
 			account.setMailINSA(prop.getProperty(MAIL_INSA));
-		} catch (MailInsaException e) {}
+		} catch (MailInsaException e) {
+		}
 
 		try {
 			account.setViadeo(new URL(prop.getProperty(VIADEO)));
-		} catch (MalformedURLException e) {}
+		} catch (MalformedURLException e) {
+		}
 		try {
 			account.setLinkedIn(new URL(prop.getProperty(LINKEDIN)));
-		} catch (MalformedURLException e) {}
+		} catch (MalformedURLException e) {
+		}
 
 		is.close();
 		return account;

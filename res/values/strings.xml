@@ -27,9 +27,6 @@
     <string name="mailINSA">Email INSA *</string>
     <string name="viadeo">URL Viadéo</string>
     <string name="linkedIn">URL LinkedIn</string>
-    <string name="help_dialog_text">Merci d\'avoir téléchargé l\'application Ouest INSA.\n
-        Vous avez maintenant la possibilité de découvrir les études en cours à la Junior-Entreprise de l\'INSA Rennes.\n
-        En tant qu\'étudiant, vous avez aussi la possibilité de postuler à certaines de nos études présentées. 
-        Nous vous contacterons par la suite.</string>
+    <string name="help_dialog_text">Merci d\'avoir téléchargé l\'application Ouest INSA.\n\nVous avez maintenant la possibilité de découvrir les études en cours à la Junior-Entreprise de l\'INSA Rennes. En tant qu\'étudiant, vous avez aussi la possibilité de postuler à certaines de nos études présentées. Nous vous contacterons par la suite.</string>
 
 </resources>
